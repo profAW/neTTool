@@ -78,8 +78,8 @@ func main() {
 	fmt.Println("    Start Analyse Network Connections")
 	graphDestination := infrastructure.SaveConnectionGraphToFsAdapter{FileAndFolder: "./results/networkgraph.gv"}
 	analysis := usecases.UcConnectionAnalysis{Destination: graphDestination}
-	conncetion := analysis.CreateConnectionList(packetSource)
-	connectionGraph := analysis.MakeConnetionGraph(conncetion)
+	connection := analysis.CreateConnectionList(packetSource)
+	connectionGraph := analysis.MakeConnetionGraph(connection)
 	analysis.ExportConnectionGraph(connectionGraph)
 	fmt.Println("    Finish Analyse Network Connections")
 
