@@ -14,17 +14,17 @@ var version = "1.0.1"
 
 func checkLicence() bool {
 
-	user, err := user.Current()
+	localUser, err := user.Current()
 	if err != nil {
 		panic(err)
 	}
 
 	// Current User
-	//fmt.Println("Username: " + user.Username)
+	//fmt.Println("Username: " + localUser.Username)
 
 	validLicence := false
-	//fmt.Println(strings.Contains(user.Username, "wenzela"))
-	if strings.Contains(user.Username, "wenzela") || strings.Contains(user.Username, "atlabor") {
+	//fmt.Println(strings.Contains(localUser.Username, "wenzela"))
+	if strings.Contains(localUser.Username, "wenzela") || strings.Contains(localUser.Username, "atlabor") {
 		validLicence = true
 	}
 
@@ -94,7 +94,7 @@ func main() {
 	fmt.Println("    Finsh PN Analysis")
 
 	fmt.Println("Finish Analyse Network Connections")
-	fmt.Println("### Bye, and thank you for the fish ###")
+	//fmt.Println("### Bye, and thank you for the fish ###")
 	fmt.Printf("Press any key to exit...")
 	b := make([]byte, 1)
 	os.Stdin.Read(b)
