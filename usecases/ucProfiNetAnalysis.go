@@ -93,14 +93,14 @@ func (s timeSlice) Len() int           { return len(s) }
 func getDeltaTimeInMs(timestamps []time.Time) []float64 {
 	var deltaTimeInMs []float64
 
-	var timeVektor timeSlice = timestamps
+	var timeVector timeSlice = timestamps
 
-	sort.Sort(timeVektor)
+	sort.Sort(timeVector)
 
 	var lastTs time.Time
 	first := true
 
-	for _, value := range timeVektor {
+	for _, value := range timeVector {
 		if !first {
 			delta := value.Sub(lastTs)
 

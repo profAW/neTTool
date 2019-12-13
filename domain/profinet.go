@@ -9,6 +9,3 @@ type ProfinetData struct {
 	Ts      []time.Time
 	DeltaTS []float64
 }
-
-// Connections Map for each src dst and type combination with the number of connectins
-//var Connections = make(map[string]ProfinetData)

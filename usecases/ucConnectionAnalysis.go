@@ -21,7 +21,7 @@ type UcConnectionAnalysis struct {
 	Destination ExportConnectionGraphPort
 }
 
-var conncetion = make(map[string]domain.EthernetConnection) // Map mit flow connections and number of connections
+var connection = make(map[string]domain.EthernetConnection) // Map mit flow connections and number of connections
 
 // CreateConnectionList  Creation of Network-Data graph
 func (e UcConnectionAnalysis) CreateConnectionList(Data map[int]gopacket.Packet) map[string]domain.EthernetConnection {
@@ -52,11 +52,11 @@ func (e UcConnectionAnalysis) CreateConnectionList(Data map[int]gopacket.Packet)
 
 			key := flow.Dst().String() + "->" + flow.Src().String() + " | " + etherTyp //+ " - " + ethernetPacket.EthernetType.String()
 
-			_, ok := conncetion[key]
+			_, ok := connection[key]
 			if ok {
-				con := conncetion[key]
+				con := connection[key]
 				con.NumberOfPackets++
-				conncetion[key] = con
+				connection[key] = con
 				//fmt.Println("value: ", value)
 				//fmt.Println("-----")
 			} else {
@@ -67,12 +67,12 @@ func (e UcConnectionAnalysis) CreateConnectionList(Data map[int]gopacket.Packet)
 				con.Dst = ethernetPacket.DstMAC.String()
 
 				con.NumberOfPackets = 1
-				conncetion[key] = con
+				connection[key] = con
 			}
 		}
 
 	}
-	return conncetion
+	return connection
 }
 
 // MakeConnetionGraph - create graphiv connection graph
@@ -86,7 +86,7 @@ func (e UcConnectionAnalysis) MakeConnetionGraph(connections map[string]domain.E
 	red := g.Subgraph("Red", dot.ClusterOption{})
 	notdef := g.Subgraph("Notdef", dot.ClusterOption{})
 
-	for _, value := range conncetion {
+	for _, value := range connection {
 
 		p := &arp
 		switch value.EthernetType {

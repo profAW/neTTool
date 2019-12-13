@@ -7,6 +7,3 @@ type EthernetConnection struct {
 	EthernetType    string
 	NumberOfPackets int
 }
-
-// Connections Map for each src dst and type combination with the number of connectins
-var Conncetions = make(map[string]EthernetConnection)
