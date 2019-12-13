@@ -27,7 +27,7 @@ func (e SavePNGraphToFsAdapter) PlotData(Daten map[string]domain.ProfinetData) {
 	p.Y.Label.Text = "Time [ms]"
 
 	// Make boxes for our data and add them to the plot.
-	statitics := []string{}
+	var statitics []string
 	xtext := make(map[int]string)
 	loc := 0.0
 	i := 0

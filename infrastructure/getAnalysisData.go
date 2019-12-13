@@ -2,11 +2,10 @@ package infrastructure
 
 import (
 	"fmt"
-	"log"
-	"time"
-
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
+	"log"
+	"time"
 )
 
 // SavedPacketsAdapter get Data from saved pcap file
@@ -27,8 +26,8 @@ func (e SavedPacketsAdapter) Read() map[int]gopacket.Packet {
 	pcapFile = e.FileAndFolder
 	handle, err = pcap.OpenOffline(pcapFile)
 	if err != nil {
-		log.Fatal(err)
 		fmt.Println("ERROR LOAD PCAP")
+		log.Fatal(err)
 	}
 	defer handle.Close()
 
