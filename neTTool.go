@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	log "github.com/sirupsen/logrus"
 	"neTTool/infrastructure"
 	"neTTool/usecases"
 	"os"
@@ -10,7 +10,7 @@ import (
 )
 
 var config infrastructure.Configuration
-var version = "1.0.1"
+var version = "1.0.2"
 
 func checkLicence() bool {
 
@@ -33,34 +33,33 @@ func checkLicence() bool {
 
 func main() {
 
-	fmt.Println("### Welcome and remember 'never forget your towel' ###")
-	fmt.Println("------------------------------------------------------")
-	fmt.Println("neTTool-Version: " + version)
-	fmt.Println("Check Licence")
+	log.Info("### Welcome and remember 'never forget your towel' ###")
+	log.Info("------------------------------------------------------")
+	log.Info("neTTool-Version: " + version)
+	log.Info("Check Licence")
 	validLicence := checkLicence()
 
 	if !validLicence {
-		fmt.Println("Check Licence falied")
-		fmt.Printf("Press any key to exit...")
+		log.Fatal("Check Licence falied")
+		log.Info("Press any key to exit...")
 		b := make([]byte, 1)
 		os.Stdin.Read(b)
 		os.Exit(3)
 	} else {
-		fmt.Println("Valid Licence found")
+		log.Info("Valid Licence found")
 	}
-
-	fmt.Println("------------------------------------------------------")
-	fmt.Println("Load Configuraiton")
+	log.Info("------------------------------------------------------")
+	log.Info("Load Configuraiton")
 
 	ConfiSource := infrastructure.ConfigurationFromFS{}
 	config = ConfiSource.LoadConfig()
-	fmt.Println("Configuraiton loaded")
-	fmt.Println("------------------------------------------------------")
+	log.Info("Configuraiton loaded")
+	log.Info("------------------------------------------------------")
 
 	os.Mkdir("./results", os.ModeDir)
 
-	fmt.Println("Start Analysis")
-	fmt.Println("Get Netzwork Data")
+	log.Info("Start Analysis")
+	log.Info("Get Netzwork Data")
 
 	sourceA := infrastructure.SavedPacketsAdapter{FileAndFolder: config.Pcapfile}
 
@@ -75,27 +74,27 @@ func main() {
 	}
 	packetSource := data.Read()
 
-	fmt.Println("    Start Analyse Network Connections")
+	log.Info("    Start Analyse Network Connections")
 	graphDestination := infrastructure.SaveConnectionGraphToFsAdapter{FileAndFolder: "./results/networkgraph.gv"}
 	analysis := usecases.UcConnectionAnalysis{Destination: graphDestination}
 	connection := analysis.CreateConnectionList(packetSource)
 	connectionGraph := analysis.MakeConnetionGraph(connection)
 	analysis.ExportConnectionGraph(connectionGraph)
-	fmt.Println("    Finish Analyse Network Connections")
+	log.Info("    Finish Analyse Network Connections")
 
-	fmt.Println("    Start PN Analysis")
+	log.Info("    Start PN Analysis")
 
 	analysisPN := usecases.UcProfiNETAnalysis{}
 	pnData := analysisPN.GetProfiNetData(packetSource)
 	pnData = analysisPN.CalcProfiNetDeltaTimeInMS(pnData)
 	pnResultExport := infrastructure.SavePNGraphToFsAdapter{FileAndFolder: ""}
 	pnResultExport.PlotData(pnData)
-	fmt.Println("        PN-Analysis created")
-	fmt.Println("    Finsh PN Analysis")
+	log.Info("        PN-Analysis created")
+	log.Info("    Finsh PN Analysis")
 
-	fmt.Println("Finish Analyse Network Connections")
+	log.Info("Finish Analyse Network Connections")
 	//fmt.Println("### Bye, and thank you for the fish ###")
-	fmt.Printf("Press any key to exit...")
+	log.Info("Press Enter key to exit...")
 	b := make([]byte, 1)
 	os.Stdin.Read(b)
 }

@@ -2,8 +2,8 @@ package infrastructure
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"time"
 )
@@ -28,7 +28,7 @@ func (e ConfigurationFromFS) LoadConfig() Configuration {
 	jsonFile, err := os.Open("config.json")
 	// if we os.Open returns an error then handle it
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
 
 	// defer the closing of our jsonFile so that we can parse it later on

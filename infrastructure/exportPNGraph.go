@@ -2,13 +2,12 @@ package infrastructure
 
 import (
 	"fmt"
-	"neTTool/domain"
-	"os"
-	"strings"
-
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/plotter"
 	"gonum.org/v1/plot/vg"
+	"neTTool/domain"
+	"os"
+	"strings"
 )
 
 // SavePNGraphToFsAdapter stores PN Analysis-Data to FS

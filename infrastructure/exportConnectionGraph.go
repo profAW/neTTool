@@ -2,7 +2,7 @@ package infrastructure
 
 import (
 	"bufio"
-	"fmt"
+	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -38,5 +38,5 @@ func (e SaveConnectionGraphToFsAdapter) ExportConnectionGraph(conncetionGraph st
 	//ioutil.WriteFile("./results/networkgraph.svg", cmd, os.FileMode(mode))
 
 	//dot -Tpng  > test.png && open test.png
-	fmt.Println("        Networkgraph created")
+	log.Info("        Networkgraph created")
 }
