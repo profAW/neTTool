@@ -1,93 +1,93 @@
 digraph  {
 	subgraph cluster_s1 {
 		label="ARP";
-		n11[label="00:01:05:40:71:f3"];
-		n28[label="20:87:56:bc:20:5e"];
-		n12[label="ac:64:17:4a:8b:a3"];
-		n25[label="ac:64:17:4d:ee:75"];
-		n29[label="ff:ff:ff:ff:ff:ff"];
-		n11->n12[label="ARP"];
-		n28->n29[label="ARP"];
-		n12->n29[label="ARP"];
-		n25->n12[label="ARP"];
+		n34[label="00:01:05:40:71:f3"];
+		n37[label="20:87:56:bc:20:5e"];
+		n18[label="ac:64:17:4a:8b:a3"];
+		n17[label="ac:64:17:4d:ee:75"];
+		n23[label="ff:ff:ff:ff:ff:ff"];
+		n34->n18[label="ARP"];
+		n37->n23[label="ARP"];
+		n18->n23[label="ARP"];
+		n17->n18[label="ARP"];
 		
 	}
 	subgraph cluster_s2 {
 		label="IPv4";
-		n15[label="00:01:05:40:71:f3"];
-		n41[label="01:00:5e:00:00:02"];
-		n20[label="01:00:5e:00:00:16"];
-		n33[label="01:00:5e:00:00:fb"];
-		n14[label="01:00:5e:00:00:fc"];
-		n37[label="01:00:5e:7f:ff:fa"];
-		n40[label="20:87:56:bc:20:5e"];
-		n13[label="a0:ce:c8:17:80:fa"];
-		n16[label="ac:64:17:4a:8b:a3"];
-		n27[label="ac:64:17:4d:ee:75"];
-		n32[label="ff:ff:ff:ff:ff:ff"];
+		n7[label="00:01:05:40:71:f3"];
+		n16[label="01:00:5e:00:00:02"];
+		n28[label="01:00:5e:00:00:16"];
+		n39[label="01:00:5e:00:00:fb"];
+		n10[label="01:00:5e:00:00:fc"];
+		n33[label="01:00:5e:7f:ff:fa"];
+		n15[label="20:87:56:bc:20:5e"];
+		n9[label="a0:ce:c8:17:80:fa"];
+		n12[label="ac:64:17:4a:8b:a3"];
+		n11[label="ac:64:17:4d:ee:75"];
+		n8[label="ff:ff:ff:ff:ff:ff"];
+		n7->n8[label="IPv4"];
+		n7->n12[label="IPv4"];
 		n15->n16[label="IPv4"];
-		n15->n32[label="IPv4"];
-		n40->n41[label="IPv4"];
-		n13->n14[label="IPv4"];
-		n13->n20[label="IPv4"];
-		n13->n32[label="IPv4"];
-		n13->n33[label="IPv4"];
-		n13->n37[label="IPv4"];
-		n16->n27[label="IPv4"];
-		n16->n15[label="IPv4"];
-		n27->n16[label="IPv4"];
+		n9->n10[label="IPv4"];
+		n9->n8[label="IPv4"];
+		n9->n28[label="IPv4"];
+		n9->n33[label="IPv4"];
+		n9->n39[label="IPv4"];
+		n12->n11[label="IPv4"];
+		n12->n7[label="IPv4"];
+		n11->n12[label="IPv4"];
 		
 	}
 	subgraph cluster_s3 {
 		label="IPv6";
-		n19[label="33:33:00:00:00:01"];
-		n36[label="33:33:00:00:00:02"];
-		n34[label="33:33:00:00:00:16"];
-		n10[label="33:33:00:00:00:fb"];
-		n31[label="33:33:00:01:00:02"];
-		n24[label="33:33:00:01:00:03"];
-		n23[label="33:33:ff:94:c1:af"];
-		n9[label="a0:ce:c8:17:80:fa"];
-		n9->n10[label="IPv6"];
-		n9->n19[label="IPv6"];
-		n9->n23[label="IPv6"];
-		n9->n24[label="IPv6"];
-		n9->n31[label="IPv6"];
-		n9->n34[label="IPv6"];
-		n9->n36[label="IPv6"];
+		n24[label="33:33:00:00:00:01"];
+		n35[label="33:33:00:00:00:02"];
+		n22[label="33:33:00:00:00:16"];
+		n32[label="33:33:00:00:00:fb"];
+		n21[label="33:33:00:01:00:02"];
+		n40[label="33:33:00:01:00:03"];
+		n41[label="33:33:ff:94:c1:af"];
+		n20[label="a0:ce:c8:17:80:fa"];
+		n20->n21[label="IPv6"];
+		n20->n22[label="IPv6"];
+		n20->n24[label="IPv6"];
+		n20->n32[label="IPv6"];
+		n20->n35[label="IPv6"];
+		n20->n40[label="IPv6"];
+		n20->n41[label="IPv6"];
 		
 	}
 	subgraph cluster_s6 {
 		label="Notdef";
-		n38[label="00:0e:8c:db:8c:55"];
-		n39[label="01:80:c2:00:00:03"];
-		n18[label="01:80:c2:00:00:0e"];
-		n17[label="20:87:56:bc:20:5f"];
-		n30[label="a0:ce:c8:17:80:fa"];
-		n38->n18[label="LinkLayerDiscovery"];
-		n17->n18[label="LinkLayerDiscovery"];
-		n17->n39[label="EAPOL"];
-		n30->n18[label="LinkLayerDiscovery"];
+		n13[label="00:0e:8c:db:8c:55"];
+		n29[label="01:80:c2:00:00:03"];
+		n14[label="01:80:c2:00:00:0e"];
+		n19[label="20:87:56:bc:20:5f"];
+		n38[label="a0:ce:c8:17:80:fa"];
+		n13->n14[label="LinkLayerDiscovery"];
+		n19->n14[label="LinkLayerDiscovery"];
+		n19->n29[label="EAPOL"];
+		n38->n14[label="LinkLayerDiscovery"];
 		
 	}
 	subgraph cluster_s4 {
 		label="PN";
-		n35[label="00:01:05:40:71:f3"];
-		n8[label="01:0e:cf:00:00:00"];
-		n7[label="ac:64:17:4a:8b:a3"];
-		n26[label="ac:64:17:4d:ee:75"];
-		n35->n7[label="8892"];
-		n7->n8[label="8892"];
-		n7->n26[label="8892"];
-		n7->n35[label="8892"];
-		n26->n7[label="8892"];
+		n25[label="00:01:05:40:71:f3"];
+		n36[label="01:0e:cf:00:00:00"];
+		n26[label="ac:64:17:4a:8b:a3"];
+		n27[label="ac:64:17:4d:ee:75"];
+		n25->n26[label="8892"];
+		n26->n25[label="8892"];
+		n26->n27[label="8892"];
+		n26->n36[label="8892"];
+		n27->n26[label="8892"];
 		
 	}
 	subgraph cluster_s5 {
 		label="Red";
-		n22[label="01:15:4e:00:00:01"];
-		n21[label="20:87:56:bc:20:5f"];
-		n21->n22[label="88e3"];
+		n31[label="01:15:4e:00:00:01"];
+		n30[label="20:87:56:bc:20:5f"];
+		n30->n31[label="88e3"];
 		
 	}
 	

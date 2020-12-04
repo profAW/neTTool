@@ -91,4 +91,5 @@ func (e SavePNGraphToFsAdapter) PlotData(Daten map[string]domain.ProfinetData) {
 	}
 	f.Sync()
 	f.Close()
+
 }
