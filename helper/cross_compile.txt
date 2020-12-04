@@ -1,0 +1,3 @@
+
+// https://dave.cheney.net/2015/08/22/cross-compilation-with-go-1-5
+GOOS=windows GOARCH=386 go build -v neTTool.go

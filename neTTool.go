@@ -2,34 +2,14 @@ package main
 
 import (
 	log "github.com/sirupsen/logrus"
+	"neTTool/helper"
 	"neTTool/infrastructure"
 	"neTTool/usecases"
 	"os"
-	"os/user"
-	"strings"
 )
 
 var config infrastructure.Configuration
-var version = "1.0.3"
-
-func checkLicence() bool {
-
-	localUser, err := user.Current()
-	if err != nil {
-		panic(err)
-	}
-
-	// Current User
-	//fmt.Println("Username: " + localUser.Username)
-
-	validLicence := false
-	//fmt.Println(strings.Contains(localUser.Username, "wenzela"))
-	if strings.Contains(localUser.Username, "wenzela") || strings.Contains(localUser.Username, "atlabor") {
-		validLicence = true
-	}
-
-	return validLicence
-}
+var version = "1.0.4"
 
 func main() {
 
@@ -37,7 +17,7 @@ func main() {
 	log.Info("------------------------------------------------------")
 	log.Info("neTTool-Version: " + version)
 	log.Info("Check Licence")
-	validLicence := checkLicence()
+	validLicence := helper.CheckLicence(helper.GetUser())
 
 	if !validLicence {
 		log.Fatal("Check Licence failed")
