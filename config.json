@@ -1,8 +1,3 @@
 {
-    "file":"/Users/wenzela/go/src/neTTool/release/TestData/versuchaufsaufbau01.pcapng",
-    "storedData":true,
-    "InterfaceID":"/Device/NPF_{3EFE15FE-3499-4237-92D6-7AB5B4B9FD9C}",
-    "snapshotLen":1024,
-    "promiscuous":true,
-    "timeout" : 30
+    "file":"/Users/wenzela/go/src/neTTool/release/TestData/versuchaufsaufbau01.pcapng"
 }

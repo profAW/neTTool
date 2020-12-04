@@ -5,17 +5,11 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"time"
 )
 
 // Configuration of neTTool via Json
 type Configuration struct {
-	Pcapfile    string        `json:"file"`
-	StoredData  bool          `json:"storedData"`
-	InterfaceID string        `json:"interfaceID"`
-	SnapshotLen int32         `json:"snapshotLen"`
-	Promiscuous bool          `json:"promiscuous"`
-	Timeout     time.Duration `json:"timeout"`
+	Pcapfile string `json:"file"`
 }
 
 // ConfigurationFromFS load config from FS
@@ -43,7 +37,7 @@ func (e ConfigurationFromFS) LoadConfig() Configuration {
 	json.Unmarshal(byteValue, &e.Config)
 
 	//fmt.Println(e.Config.Pcapfile)
-	//fmt.Println(e.Config.StoredData)
+	//fmt.Println(e.Config.UseStoredData)
 	//fmt.Println(e.Config.InterfaceID)
 
 	return e.Config

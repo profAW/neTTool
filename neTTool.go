@@ -10,7 +10,7 @@ import (
 )
 
 var config infrastructure.Configuration
-var version = "1.0.2"
+var version = "1.0.3"
 
 func checkLicence() bool {
 
@@ -40,37 +40,54 @@ func main() {
 	validLicence := checkLicence()
 
 	if !validLicence {
-		log.Fatal("Check Licence falied")
-		log.Info("Press any key to exit...")
+		log.Fatal("Check Licence failed")
+		log.Info("Press enter key to exit...")
 		b := make([]byte, 1)
-		os.Stdin.Read(b)
+		_, _ = os.Stdin.Read(b)
 		os.Exit(3)
 	} else {
 		log.Info("Valid Licence found")
+		doAnalysis()
 	}
+
+}
+
+func doAnalysis() {
+
 	log.Info("------------------------------------------------------")
-	log.Info("Load Configuraiton")
+	log.Info("Load Configuration")
 
 	ConfiSource := infrastructure.ConfigurationFromFS{}
 	config = ConfiSource.LoadConfig()
-	log.Info("Configuraiton loaded")
+	log.Info("Configuration loaded")
 	log.Info("------------------------------------------------------")
 
-	os.Mkdir("./results", os.ModeDir)
+	// TODO: Refactor in function with Unit-Test?
+	if _, err := os.Stat("./results"); os.IsNotExist(err) {
+		// path/to/whatever does not exist
+		errDir := os.Mkdir("./results", os.ModeDir)
+
+		if errDir != nil {
+			log.Error("Result-Folder could not be created, please run neTTool with admin permission.")
+			log.Info("Press enter key to exit ...")
+			b := make([]byte, 1)
+			_, _ = os.Stdin.Read(b)
+			os.Exit(3)
+		}
+	}
 
 	log.Info("Start Analysis")
-	log.Info("Get Netzwork Data")
-
-	sourceA := infrastructure.SavedPacketsAdapter{FileAndFolder: config.Pcapfile}
-
-	mydevice := config.InterfaceID
-	sourceB := infrastructure.LivePacketsAdapter{Device: mydevice, SnapshotLen: config.SnapshotLen, Promiscuous: config.Promiscuous, Timeout: config.Timeout}
+	log.Info("Get Network Data")
 
 	data := usecases.UcGetNetworkData{}
-	if config.StoredData {
-		data.Source = sourceA
+	if config.Pcapfile != "" {
+		data.Source = infrastructure.SavedPacketsAdapter{FileAndFolder: config.Pcapfile}
 	} else {
-		data.Source = sourceB
+		log.Error("No File in Config-File. Please provide file. ")
+		log.Info("Press enter key to exit...")
+		b := make([]byte, 1)
+		_, _ = os.Stdin.Read(b)
+		os.Exit(3)
 	}
 	packetSource := data.Read()
 
@@ -90,11 +107,11 @@ func main() {
 	pnResultExport := infrastructure.SavePNGraphToFsAdapter{FileAndFolder: ""}
 	pnResultExport.PlotData(pnData)
 	log.Info("        PN-Analysis created")
-	log.Info("    Finsh PN Analysis")
+	log.Info("    Finish PN Analysis")
 
 	log.Info("Finish Analyse Network Connections")
 	//fmt.Println("### Bye, and thank you for the fish ###")
 	log.Info("Press Enter key to exit...")
 	b := make([]byte, 1)
-	os.Stdin.Read(b)
+	_, _ = os.Stdin.Read(b)
 }
