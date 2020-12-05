@@ -39,6 +39,7 @@ func (e UcConnectionAnalysis) CreateConnectionList(Data map[int]gopacket.Packet)
 
 			etherTyp := ""
 
+			// Replace UnknownEtherType with EthernetTyp value
 			if ethernetPacket.EthernetType.String() == "UnknownEthernetType" {
 
 				etype := ethernetPacket.LayerContents()
@@ -84,9 +85,11 @@ func (e UcConnectionAnalysis) MakeConnetionGraph(connections map[string]domain.E
 	ip6 := g.Subgraph("IPv6", dot.ClusterOption{})
 	pn := g.Subgraph("PN", dot.ClusterOption{})
 	red := g.Subgraph("Red", dot.ClusterOption{})
+	eapol := g.Subgraph("EAPOL", dot.ClusterOption{})
+	linklayerdiscovery := g.Subgraph("LinkLayerDiscovery", dot.ClusterOption{})
 	notdef := g.Subgraph("Notdef", dot.ClusterOption{})
 
-	for _, value := range connection {
+	for _, value := range connections {
 
 		p := &arp
 		switch value.EthernetType {
@@ -100,6 +103,10 @@ func (e UcConnectionAnalysis) MakeConnetionGraph(connections map[string]domain.E
 			p = &pn
 		case "88e3":
 			p = &red
+		case "EAPOL":
+			p = &eapol
+		case "LinkLayerDiscovery":
+			p = &linklayerdiscovery
 		default:
 			p = &notdef
 		}
