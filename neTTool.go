@@ -9,7 +9,7 @@ import (
 )
 
 var config infrastructure.Configuration
-var version = "1.0.5"
+var version = "1.0.6"
 
 func main() {
 
@@ -22,9 +22,7 @@ func main() {
 	if !validLicence {
 		log.Fatal("Check Licence failed")
 		log.Info("Press enter key to exit...")
-		b := make([]byte, 1)
-		_, _ = os.Stdin.Read(b)
-		os.Exit(3)
+		helper.CloseApplicationWithError()
 	} else {
 		log.Info("Valid Licence found")
 		doAnalysis()
@@ -39,20 +37,25 @@ func doAnalysis() {
 
 	ConfiSource := infrastructure.ConfigurationFromFS{}
 	config = ConfiSource.LoadConfig()
+
+	if !helper.Exists(config.Pcapfile) {
+		log.Error("Can not access the pcap-file from Configuration. Please check path and file. ")
+		log.Error("Configuration-File-Path-Name: ", config.Pcapfile)
+		log.Info("Press enter key to exit...")
+		helper.CloseApplicationWithError()
+	}
+
 	log.Info("Configuration loaded")
 	log.Info("------------------------------------------------------")
 
-	// TODO: Refactor in function with Unit-Test?
-	if _, err := os.Stat("./results"); os.IsNotExist(err) {
+	if !helper.Exists("./results") {
 		// path/to/whatever does not exist
 		errDir := os.Mkdir("./results", os.ModeDir)
 
 		if errDir != nil {
 			log.Error("Result-Folder could not be created, please run neTTool with admin permission.")
 			log.Info("Press enter key to exit ...")
-			b := make([]byte, 1)
-			_, _ = os.Stdin.Read(b)
-			os.Exit(3)
+			helper.CloseApplicationWithError()
 		}
 	}
 
@@ -60,15 +63,7 @@ func doAnalysis() {
 	log.Info("Get Network Data")
 
 	data := usecases.UcGetNetworkData{}
-	if config.Pcapfile != "" {
-		data.Source = infrastructure.SavedPacketsAdapter{FileAndFolder: config.Pcapfile}
-	} else {
-		log.Error("No File in Config-File. Please provide file. ")
-		log.Info("Press enter key to exit...")
-		b := make([]byte, 1)
-		_, _ = os.Stdin.Read(b)
-		os.Exit(3)
-	}
+	data.Source = infrastructure.SavedPacketsAdapter{FileAndFolder: config.Pcapfile}
 	packetSource := data.Read()
 
 	log.Info("    Start Analyse Network Connections")
@@ -90,8 +85,6 @@ func doAnalysis() {
 	log.Info("    Finish PN Analysis")
 
 	log.Info("Finish Analyse Network Connections")
-	//fmt.Println("### Bye, and thank you for the fish ###")
-	log.Info("Press Enter key to exit...")
-	b := make([]byte, 1)
-	_, _ = os.Stdin.Read(b)
+	log.Info("Press enter key to exit...")
+	helper.CloseApplicationWithOutError()
 }
