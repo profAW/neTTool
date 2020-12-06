@@ -3,18 +3,14 @@ package usecases
 import (
 	"neTTool/domain"
 	"sort"
-	"strconv"
 	"time"
-
-	"github.com/google/gopacket"
-	"github.com/google/gopacket/layers"
 )
 
 // UcProfiNETAnalysis PN-Data-Analysis
 type UcProfiNETAnalysis struct {
 }
 
-var conncetionPN = make(map[string]domain.ProfinetData) // Map mit flow connections and number of connections
+var conncetionPN = make(map[string]domain.ProfinetConnection) // Map mit flow connections and number of connections
 
 func check(e error) {
 	if e != nil {
@@ -22,64 +18,14 @@ func check(e error) {
 	}
 }
 
-// GetProfiNetData  Read PN Data from Packets
-func (e UcProfiNETAnalysis) GetProfiNetData(Data map[int]gopacket.Packet) map[string]domain.ProfinetData {
-
-	i := 0
-	for _, packet := range Data {
-
-		i = i + 1
-
-		ethernetLayer := packet.Layer(layers.LayerTypeEthernet)
-		if ethernetLayer != nil {
-			//fmt.Println("Ethernet layer detected.")
-			ethernetPacket, _ := ethernetLayer.(*layers.Ethernet)
-
-			flow := ethernetPacket.LinkFlow()
-
-			etherTyp := ""
-
-			if ethernetPacket.EthernetType.String() == "UnknownEthernetType" {
-
-				etype := ethernetPacket.LayerContents()
-				v1 := int64(etype[12])
-				v2 := int64(etype[13])
-				etherTyp = strconv.FormatInt(v1, 16) + strconv.FormatInt(v2, 16)
-				//fmt.Println(value)
-			}
-
-			if etherTyp == "8892" {
-				key := flow.Dst().String() + "->" + flow.Src().String() // + " | " + etherTyp //+ " - " + ethernetPacket.EthernetType.String()
-
-				_, ok := conncetionPN[key]
-				if ok {
-					con := conncetionPN[key]
-					//i := len(con.Ts) + 1
-					//fmt.Println(i)
-					con.Ts = append(con.Ts, packet.Metadata().Timestamp)
-					conncetionPN[key] = con
-					//fmt.Println("value: ", value)
-					//fmt.Println("-----")
-				} else {
-
-					var con domain.ProfinetData
-					con.Src = ethernetPacket.SrcMAC.String()
-					con.Dst = ethernetPacket.DstMAC.String()
-					con.Ts = append(con.Ts, packet.Metadata().Timestamp)
-					conncetionPN[key] = con
-				}
-			}
-		}
-	}
-	return conncetionPN
-}
-
 // CalcProfiNetDeltaTimeInMS Caluclate the TimeDiffernce between two PN packages
-func (e UcProfiNETAnalysis) CalcProfiNetDeltaTimeInMS(Data map[string]domain.ProfinetData) map[string]domain.ProfinetData {
+func (e UcProfiNETAnalysis) CalcProfiNetDeltaTimeInMS(Data map[string]domain.CommonConnection) map[string]domain.CommonConnection {
 
 	for k, con := range Data {
-		con.DeltaTS = getDeltaTimeInMs(con.Ts)
-		Data[k] = con
+		if con.EthernetType == "8892" {
+			con.DeltaTS = getDeltaTimeInMs(con.Ts)
+			Data[k] = con
+		}
 	}
 	return Data
 }

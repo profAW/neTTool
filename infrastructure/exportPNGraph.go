@@ -16,7 +16,7 @@ type SavePNGraphToFsAdapter struct {
 }
 
 // PlotData exports the PN Analysis Result to FS
-func (e SavePNGraphToFsAdapter) PlotData(Daten map[string]domain.ProfinetData) {
+func (e SavePNGraphToFsAdapter) PlotData(Daten map[string]domain.CommonConnection) {
 
 	p, err := plot.New()
 	if err != nil {
@@ -32,32 +32,36 @@ func (e SavePNGraphToFsAdapter) PlotData(Daten map[string]domain.ProfinetData) {
 	i := 0
 	for k, con := range Daten {
 
-		if len(con.DeltaTS) > 0 {
+		if con.EthernetType == "8892" {
+			if len(con.DeltaTS) > 0 {
 
-			plotData := make(plotter.Values, len(con.DeltaTS))
-			for i, s := range con.DeltaTS {
-				plotData[i] = s
+				plotData := make(plotter.Values, len(con.DeltaTS))
+				for i, s := range con.DeltaTS {
+					plotData[i] = s
+				}
+				w := vg.Points(20)
+				b0, err := plotter.NewBoxPlot(w, loc, plotData)
+				if err != nil {
+					panic(err)
+				}
+
+				statitics = append(statitics, "----------------------------------------------")
+
+				statitics = append(statitics, string(k))
+				statitics = append(statitics, "Max            : "+fmt.Sprintf("%2f", b0.Max)+"ms")
+				statitics = append(statitics, "Oberer Wisker  : "+fmt.Sprintf("%2f", b0.AdjHigh)+"ms")
+				statitics = append(statitics, "75% Quantil    : "+fmt.Sprintf("%2f", b0.Quartile3)+"ms")
+				statitics = append(statitics, "Median         : "+fmt.Sprintf("%2f", b0.Median)+"ms")
+				statitics = append(statitics, "25% Quantil    : "+fmt.Sprintf("%2f", b0.Quartile1)+"ms")
+				statitics = append(statitics, "Unterer Wisker : "+fmt.Sprintf("%2f", b0.AdjLow)+"ms")
+				statitics = append(statitics, "Min            : "+fmt.Sprintf("%2f", b0.Min)+"ms")
+
+				p.Add(b0)
+				xtext[i] = strings.ReplaceAll(k, "->", " \n -->\n")
+				xtext[i] = strings.ReplaceAll(xtext[i], "|", " \n | ")
+				loc = loc + 1
+				i = i + 1
 			}
-			w := vg.Points(20)
-			b0, err := plotter.NewBoxPlot(w, loc, plotData)
-			if err != nil {
-				panic(err)
-			}
-			statitics = append(statitics, "----------------------------------------------")
-
-			statitics = append(statitics, string(k))
-			statitics = append(statitics, "Max            : "+fmt.Sprintf("%2f", b0.Max)+"ms")
-			statitics = append(statitics, "Oberer Wisker  : "+fmt.Sprintf("%2f", b0.AdjHigh)+"ms")
-			statitics = append(statitics, "75% Quantil    : "+fmt.Sprintf("%2f", b0.Quartile3)+"ms")
-			statitics = append(statitics, "Median         : "+fmt.Sprintf("%2f", b0.Median)+"ms")
-			statitics = append(statitics, "25% Quantil    : "+fmt.Sprintf("%2f", b0.Quartile1)+"ms")
-			statitics = append(statitics, "Unterer Wisker : "+fmt.Sprintf("%2f", b0.AdjLow)+"ms")
-			statitics = append(statitics, "Min            : "+fmt.Sprintf("%2f", b0.Min)+"ms")
-
-			p.Add(b0)
-			xtext[i] = strings.ReplaceAll(k, "->", " \n -->\n")
-			loc = loc + 1
-			i = i + 1
 		}
 
 	}
@@ -76,9 +80,11 @@ func (e SavePNGraphToFsAdapter) PlotData(Daten map[string]domain.ProfinetData) {
 		p.NominalX(xtext[0], xtext[1], xtext[2], xtext[3])
 	case 5:
 		p.NominalX(xtext[0], xtext[1], xtext[2], xtext[3], xtext[4])
+	case 6:
+		p.NominalX(xtext[0], xtext[1], xtext[2], xtext[3], xtext[4], xtext[5])
 	}
 
-	if err := p.Save(6*vg.Inch, 15*vg.Inch, "./results/boxplot.pdf"); err != nil {
+	if err := p.Save(8*vg.Inch, 15*vg.Inch, "./results/boxplot.pdf"); err != nil {
 		panic(err)
 	}
 

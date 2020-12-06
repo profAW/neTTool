@@ -2,8 +2,8 @@ package domain
 
 import "time"
 
-// ProfinetData contains all PN Data of one SRC-DST Connection
-type ProfinetData struct {
+// ProfinetConnection contains all PN Data of one SRC-DST Connection
+type ProfinetConnection struct {
 	Src     string
 	Dst     string
 	Ts      []time.Time

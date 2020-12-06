@@ -9,14 +9,14 @@ import (
 )
 
 var config infrastructure.Configuration
-var version = "1.0.6"
+var version = "1.0.7"
 
 func main() {
 
 	log.Info("### Welcome and remember 'never forget your towel' ###")
 	log.Info("------------------------------------------------------")
 	log.Info("neTTool-Version: " + version)
-	log.Info("Check Licence")
+	log.Info("Check Licence ...")
 	validLicence := helper.CheckLicence(helper.GetUser())
 
 	if !validLicence {
@@ -39,7 +39,7 @@ func doAnalysis() {
 	config = ConfiSource.LoadConfig()
 
 	if !helper.Exists(config.Pcapfile) {
-		log.Error("Can not access the pcap-file from Configuration. Please check path and file. ")
+		log.Error("Can not access the pcap-file from Configuration. Please check path and file.")
 		log.Error("Configuration-File-Path-Name: ", config.Pcapfile)
 		log.Info("Press enter key to exit...")
 		helper.CloseApplicationWithError()
@@ -65,22 +65,22 @@ func doAnalysis() {
 	data := usecases.UcGetNetworkData{}
 	data.Source = infrastructure.SavedPacketsAdapter{FileAndFolder: config.Pcapfile}
 	packetSource := data.Read()
+	connectionsList := data.CreateNetworkData(packetSource)
 
 	log.Info("    Start Analyse Network Connections")
 	graphDestination := infrastructure.SaveConnectionGraphToFsAdapter{FileAndFolder: "./results/networkgraph.gv"}
 	analysis := usecases.UcConnectionAnalysis{Destination: graphDestination}
-	connection := analysis.CreateConnectionList(packetSource)
-	connectionGraph := analysis.MakeConnetionGraph(connection)
+	connectionGraph := analysis.MakeConnetionGraph(connectionsList)
+
 	analysis.ExportConnectionGraph(connectionGraph)
 	log.Info("    Finish Analyse Network Connections")
 
 	log.Info("    Start PN Analysis")
 
 	analysisPN := usecases.UcProfiNETAnalysis{}
-	pnData := analysisPN.GetProfiNetData(packetSource)
-	pnData = analysisPN.CalcProfiNetDeltaTimeInMS(pnData)
+	connectionsList = analysisPN.CalcProfiNetDeltaTimeInMS(connectionsList)
 	pnResultExport := infrastructure.SavePNGraphToFsAdapter{FileAndFolder: ""}
-	pnResultExport.PlotData(pnData)
+	pnResultExport.PlotData(connectionsList)
 	log.Info("        PN-Analysis created")
 	log.Info("    Finish PN Analysis")
 
