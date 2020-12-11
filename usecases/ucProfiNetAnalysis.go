@@ -10,14 +10,6 @@ import (
 type UcProfiNETAnalysis struct {
 }
 
-var conncetionPN = make(map[string]domain.ProfinetConnection) // Map mit flow connections and number of connections
-
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
 // CalcProfiNetDeltaTimeInMS Caluclate the TimeDiffernce between two PN packages
 func (e UcProfiNETAnalysis) CalcProfiNetDeltaTimeInMS(Data map[string]domain.CommonConnection) map[string]domain.CommonConnection {
 

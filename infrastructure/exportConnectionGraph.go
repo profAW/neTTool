@@ -19,7 +19,7 @@ func check(e error) {
 	}
 }
 
-// ExportConnectionGraph export excecution
+// ExportConnectionGraph export execution
 func (e SaveConnectionGraphToFsAdapter) ExportConnectionGraph(conncetionGraph string) {
 	filename := e.FileAndFolder
 	f, err := os.Create(filename)
@@ -33,9 +33,7 @@ func (e SaveConnectionGraphToFsAdapter) ExportConnectionGraph(conncetionGraph st
 	path, _ := exec.LookPath("dot")
 	cmd, _ := exec.Command(path, "-Tpng", filename).Output()
 	mode := int(0777)
-	//ioutil.WriteFile("./results/networkgraph.pdf", cmd, os.FileMode(mode))
 	ioutil.WriteFile("./results/networkgraph.png", cmd, os.FileMode(mode))
-	//ioutil.WriteFile("./results/networkgraph.svg", cmd, os.FileMode(mode))
 
 	//dot -Tpng  > test.png && open test.png
 	log.Info("        Networkgraph created")
