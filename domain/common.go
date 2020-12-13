@@ -16,6 +16,10 @@ type CommonConnection struct {
 	DeltaTS         []float64
 }
 
+func (e CommonConnection) GetKey() string {
+	return e.Dst + "->" + e.Src + "|" + e.EthernetType
+}
+
 func getEthernetTyp(etype []byte) string {
 	// Extract EthernetType from Byte-String on Pos 12 and 13
 	v1 := int64(etype[12])

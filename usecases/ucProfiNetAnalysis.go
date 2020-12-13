@@ -10,16 +10,31 @@ import (
 type UcProfiNETAnalysis struct {
 }
 
-// CalcProfiNetDeltaTimeInMS Caluclate the TimeDiffernce between two PN packages
+// CalcProfiNetDeltaTimeInMS Calculate the TimeDifference between two PN packages
 func (e UcProfiNETAnalysis) CalcProfiNetDeltaTimeInMS(Data map[string]domain.CommonConnection) map[string]domain.CommonConnection {
 
-	for k, con := range Data {
-		if con.EthernetType == "8892" {
-			con.DeltaTS = getDeltaTimeInMs(con.Ts)
-			Data[k] = con
+	c := make(chan domain.CommonConnection, 100) // create non blocking channels
+	numberOfOpenChannels := 0                    // count the number of open channels
+	for _, con := range Data {                   // create goroutine for each connection to calculate delta ts
+		go CalcDetlaTs(con, c)
+		numberOfOpenChannels++
+	}
+
+	for con := range c { // loop over the results and add it to the connection map
+		Data[con.GetKey()] = con
+		numberOfOpenChannels--
+		if numberOfOpenChannels == 0 {
+			close(c)
 		}
 	}
 	return Data
+}
+
+func CalcDetlaTs(con domain.CommonConnection, result chan domain.CommonConnection) {
+	if con.EthernetType == "8892" {
+		con.DeltaTS = getDeltaTimeInMs(con.Ts)
+	}
+	result <- con
 }
 
 type timeSlice []time.Time
