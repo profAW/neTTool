@@ -8,6 +8,7 @@ require (
 	github.com/fatih/color v1.10.0 // indirect
 	github.com/go-echarts/go-echarts/v2 v2.2.3 // indirect
 	github.com/google/gopacket v1.1.17
+	github.com/jfeliu007/goplantuml v1.5.2 // indirect
 	github.com/rakyll/gotest v0.0.5 // indirect
 	github.com/sirupsen/logrus v1.6.0
 	github.com/zserge/lorca v0.1.9

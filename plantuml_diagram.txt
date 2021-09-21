@@ -1,0 +1,10 @@
+Create a plantuml diagram via downloaded go tool:
+
+1. Open terminal
+2. Type in:
+        goplantuml -recursive $GOPATH/src/neTTool  >  $GOPATH/src/neTTool/diagramme.puml
+3. Add output to VS Code and run plantuml or use goland plugin for plantuml
+
+
+Source:
+https://github.com/jfeliu007/goplantuml

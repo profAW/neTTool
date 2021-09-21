@@ -12,6 +12,7 @@ type UcProfiNETAnalysis struct {
 
 // CalcProfiNetDeltaTimeInMS Calculate the TimeDifference between two PN packages
 func (e UcProfiNETAnalysis) CalcProfiNetDeltaTimeInMS(Data map[string]domain.CommonConnection) map[string]domain.CommonConnection {
+	// to my future me: maybe refactor to ==> var wg sync.WaitGroup
 
 	c := make(chan domain.CommonConnection, 100) // create non blocking channels
 	numberOfOpenChannels := 0                    // count the number of open channels
