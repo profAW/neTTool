@@ -1,9 +1,9 @@
 package infrastructure
 
 import (
+	"fmt"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
-	log "github.com/sirupsen/logrus"
 	"time"
 )
 
@@ -25,8 +25,8 @@ func (e SavedPacketsAdapter) Read() map[int]gopacket.Packet {
 	pcapFile = e.FileAndFolder
 	handle, err = pcap.OpenOffline(pcapFile)
 	if err != nil {
-		log.Info("ERROR LOAD PCAP")
-		log.Fatal(err)
+		fmt.Println("ERROR LOAD PCAP")
+		fmt.Println(err)
 	}
 	defer handle.Close()
 
@@ -68,7 +68,7 @@ func (e LivePacketsAdapter) Read() map[int]gopacket.Packet {
 	timeout = e.Timeout * time.Second
 	handle, err = pcap.OpenLive(device, snapshotLen, promiscuous, timeout)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
 	defer handle.Close()
 
@@ -79,6 +79,5 @@ func (e LivePacketsAdapter) Read() map[int]gopacket.Packet {
 		i = i + 1
 	}
 
-	//fmt.Println(packets)
 	return packets
 }

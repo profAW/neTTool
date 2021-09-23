@@ -2,7 +2,7 @@ package infrastructure
 
 import (
 	"bufio"
-	log "github.com/sirupsen/logrus"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -24,17 +24,32 @@ func (e SaveConnectionGraphToFsAdapter) ExportConnectionGraph(conncetionGraph st
 	filename := e.FileAndFolder
 	f, err := os.Create(filename)
 	check(err)
-	defer f.Close()
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+
+		}
+	}(f)
 
 	w := bufio.NewWriter(f)
-	w.WriteString(conncetionGraph)
-	w.Flush()
+	_, err = w.WriteString(conncetionGraph)
+	if err != nil {
+		return
+	}
+	err = w.Flush()
+	if err != nil {
+		fmt.Println("Error Export Connection Graph")
+		return
+	}
 
 	path, _ := exec.LookPath("dot")
 	cmd, _ := exec.Command(path, "-Tpng", filename).Output()
-	mode := int(0777)
-	ioutil.WriteFile("./results/networkgraph.png", cmd, os.FileMode(mode))
+	mode := 0777
+	err = ioutil.WriteFile("./results/networkgraph.png", cmd, os.FileMode(mode))
+	if err != nil {
+		return
+	}
 
 	//dot -Tpng  > test.png && open test.png
-	log.Info("        Networkgraph created")
+	fmt.Println("        Networkgraph created")
 }

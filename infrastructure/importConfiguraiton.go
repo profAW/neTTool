@@ -2,8 +2,8 @@ package infrastructure
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 )
 
@@ -22,11 +22,16 @@ func (e ConfigurationFromFS) LoadConfig() Configuration {
 	jsonFile, err := os.Open("config.json")
 	// if we os.Open returns an error then handle it
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
 
 	// defer the closing of our jsonFile so that we can parse it later on
-	defer jsonFile.Close()
+	defer func(jsonFile *os.File) {
+		err = jsonFile.Close()
+		if err != nil {
+
+		}
+	}(jsonFile)
 
 	//fmt.Println("Successfully Opened json")
 	// read our opened xmlFile as a byte array.
@@ -34,7 +39,10 @@ func (e ConfigurationFromFS) LoadConfig() Configuration {
 
 	// we unmarshal our byteArray which contains our
 	// jsonFile's content into 'users' which we defined above
-	json.Unmarshal(byteValue, &e.Config)
+	err = json.Unmarshal(byteValue, &e.Config)
+	if err != nil {
+		return Configuration{}
+	}
 
 	//fmt.Println(e.Config.Pcapfile)
 	//fmt.Println(e.Config.UseStoredData)

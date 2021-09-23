@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	log "github.com/sirupsen/logrus"
 	"neTTool/helper"
 	"neTTool/infrastructure"
@@ -13,27 +14,25 @@ var version = "1.0.8"
 
 func main() {
 
-	log.Info("### Welcome and remember 'never forget your towel' ###")
-	log.Info("------------------------------------------------------")
-	log.Info("neTTool-Version: " + version)
-	log.Info("Check Licence ...")
-	validLicence := helper.CheckLicence(helper.GetUser())
+	fmt.Println("╱╱╱╱╱╱╱╱╱╱╭━━━━┳━━━━╮╱╱╱╱╭╮╱╱╱╱╱")
+	fmt.Println("╱╱╱╱╱╱╱╱╱╱┃╭╮╭╮┃╭╮╭╮┃╱╱╱╱┃┃╱╱╱╱╱")
+	fmt.Println("╱╱╱╱╱╭━╮╭━┻┫┃┃╰┻╯┃┃┣┻━┳━━┫┃╱╱╱╱╱")
+	fmt.Println("╱╱╱╱╱┃╭╮┫┃━┫┃┃╱╱╱┃┃┃╭╮┃╭╮┃┃╱╱╱╱╱")
+	fmt.Println("╱╱╱╱╱┃┃┃┃┃━┫┃┃╱╱╱┃┃┃╰╯┃╰╯┃╰╮╱╱╱╱╱")
+	fmt.Println("╱╱╱╱╱╰╯╰┻━━╯╰╯╱╱╱╰╯╰━━┻━━┻━╯╱╱╱╱╱")
+	fmt.Println("----------------------------------")
+	fmt.Println("neTTool-Version: " + version)
 
-	if !validLicence {
-		log.Fatal("Check Licence failed")
-		log.Info("Press enter key to exit...")
-		helper.CloseApplicationWithError()
-	} else {
-		log.Info("Valid Licence found")
-		doAnalysis()
-	}
+	doAnalysis()
+
+	helper.CloseApplicationWithOutError()
 
 }
 
 func doAnalysis() {
 
-	log.Info("------------------------------------------------------")
-	log.Info("Load Configuration")
+	fmt.Println("------------------------------------------------------")
+	fmt.Println("Load Configuration")
 
 	ConfiSource := infrastructure.ConfigurationFromFS{}
 	config = ConfiSource.LoadConfig()
@@ -41,12 +40,12 @@ func doAnalysis() {
 	if !helper.Exists(config.Pcapfile) {
 		log.Error("Can not access the pcap-file from Configuration. Please check path and file.")
 		log.Error("Configuration-File-Path-Name: ", config.Pcapfile)
-		log.Info("Press enter key to exit...")
+		fmt.Println("Press enter key to exit...")
 		helper.CloseApplicationWithError()
 	}
 
-	log.Info("Configuration loaded")
-	log.Info("------------------------------------------------------")
+	fmt.Println("Configuration loaded")
+	fmt.Println("------------------------------------------------------")
 
 	if !helper.Exists("./results") {
 		// path/to/whatever does not exist
@@ -54,37 +53,36 @@ func doAnalysis() {
 
 		if errDir != nil {
 			log.Error("Result-Folder could not be created, please run neTTool with admin permission.")
-			log.Info("Press enter key to exit ...")
+			fmt.Println("Press enter key to exit ...")
 			helper.CloseApplicationWithError()
 		}
 	}
 
-	log.Info("Start Analysis")
-	log.Info("Get Network Data")
+	fmt.Println("Start Analysis")
+	fmt.Println("Get Network Data")
 
 	data := usecases.UcGetNetworkData{}
 	data.Source = infrastructure.SavedPacketsAdapter{FileAndFolder: config.Pcapfile}
 	packetSource := data.Read()
 	connectionsList := data.CreateNetworkData(packetSource)
 
-	log.Info("    Start Analyse Network Connections")
+	fmt.Println("    Start Analyse Network Connections")
 	graphDestination := infrastructure.SaveConnectionGraphToFsAdapter{FileAndFolder: "./results/networkgraph.gv"}
 	analysis := usecases.UcConnectionAnalysis{Destination: graphDestination}
 	connectionGraph := analysis.MakeConnetionGraph(connectionsList)
 
 	analysis.ExportConnectionGraph(connectionGraph)
-	log.Info("    Finish Analyse Network Connections")
+	fmt.Println("    Finish Analyse Network Connections")
 
-	log.Info("    Start PN Analysis")
+	fmt.Println("    Start PN Analysis")
 
 	analysisPN := usecases.UcProfiNETAnalysis{}
 	connectionsList = analysisPN.CalcProfiNetDeltaTimeInMS(connectionsList)
 	pnResultExport := infrastructure.SavePNGraphToFsAdapter{FileAndFolder: ""}
 	pnResultExport.PlotData(connectionsList)
-	log.Info("        PN-Analysis created")
-	log.Info("    Finish PN Analysis")
+	fmt.Println("        PN-Analysis created")
+	fmt.Println("    Finish PN Analysis")
 
-	log.Info("Finish Analyse Network Connections")
-	log.Info("Press enter key to exit...")
-	helper.CloseApplicationWithOutError()
+	fmt.Println("Finish Analyse Network Connections")
+	fmt.Println("Press enter key to exit...")
 }
