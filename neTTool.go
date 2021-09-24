@@ -6,8 +6,6 @@ import (
 	"neTTool/infrastructure"
 	"neTTool/usecases"
 	"os"
-
-	log "github.com/sirupsen/logrus"
 )
 
 var config infrastructure.Configuration
@@ -53,7 +51,7 @@ func doAnalysis() {
 		errDir := os.Mkdir("./results", os.ModeDir)
 
 		if errDir != nil {
-			log.Error("Result-Folder could not be created, please run neTTool with admin permission.")
+			fmt.Println("Result-Folder could not be created, please run neTTool with admin permission.")
 			fmt.Println("Press enter key to exit ...")
 			helper.CloseApplicationWithError()
 		}
