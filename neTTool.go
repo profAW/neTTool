@@ -2,15 +2,16 @@ package main
 
 import (
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"neTTool/helper"
 	"neTTool/infrastructure"
 	"neTTool/usecases"
 	"os"
+
+	log "github.com/sirupsen/logrus"
 )
 
 var config infrastructure.Configuration
-var version = "1.0.8"
+var version = "1.1.0"
 
 func main() {
 
@@ -38,8 +39,8 @@ func doAnalysis() {
 	config = ConfiSource.LoadConfig()
 
 	if !helper.Exists(config.Pcapfile) {
-		log.Error("Can not access the pcap-file from Configuration. Please check path and file.")
-		log.Error("Configuration-File-Path-Name: ", config.Pcapfile)
+		fmt.Println("Can not access the pcap-file from Configuration. Please check path and file.")
+		fmt.Println("Configuration-File-Path-Name: ", config.Pcapfile)
 		fmt.Println("Press enter key to exit...")
 		helper.CloseApplicationWithError()
 	}
