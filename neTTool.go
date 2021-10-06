@@ -6,6 +6,7 @@ import (
 	"neTTool/infrastructure"
 	"neTTool/usecases"
 	"os"
+	"time"
 )
 
 var config infrastructure.Configuration
@@ -79,6 +80,11 @@ func doAnalysis() {
 	connectionsList = analysisPN.CalcProfiNetDeltaTimeInMS(connectionsList)
 	pnResultExport := infrastructure.SavePNGraphToFsAdapter{FileAndFolder: ""}
 	pnResultExport.PlotData(connectionsList)
+
+	currentTime := time.Now()
+
+	zipPathAndFile := "result_" + currentTime.Format("2006_01_02_15_04_05") + ".zip"
+	infrastructure.ZipResults("./results", zipPathAndFile)
 	fmt.Println("        PN-Analysis created")
 	fmt.Println("    Finish PN Analysis")
 
