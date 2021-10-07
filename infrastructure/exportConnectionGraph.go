@@ -51,5 +51,5 @@ func (e SaveConnectionGraphToFsAdapter) ExportConnectionGraph(conncetionGraph st
 	}
 
 	//dot -Tpng  > test.png && open test.png
-	fmt.Println("        Networkgraph created")
+	//fmt.Println("        Networkgraph created")
 }

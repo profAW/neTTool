@@ -17,10 +17,11 @@ The aim of the tool is to analyse profiNET connections as part of a laboratory s
 ## Executing program
 
 * Capture network traffic with Wireshark in a pcap file
-* Enter the path to the pcap file in the config.json file
-* Optional: Clear the results folder
 * Run the program
-* Analyse the results inside the "results" folder
+  * Load pcap-file
+  * Analyse pcap-file
+  * Save results in zip-file
+* Analyse the results inside the "zip" file
 
 ## Testing with example data
 
@@ -77,12 +78,23 @@ Median         : 1.999000ms
 Unterer Wisker : 1.945000ms
 Min            : 0.082000ms
 
+## Cross compile
+on Mac-OS for Windows OS
+
+```console
+foo@bar:~$ fyne-cross windows -arch=386       
+foo@bar:~$ brew install mingw-w64
+foo@bar:~$ CGO_ENABLED=1 CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++ GOOS=windows GOARCH=386 go build neTTool.go
+```
+
 ## Authors
 
 André Wenzel
 
 ## Version History
 
+* 1.2.0
+  * GUI Added, need for config-fiel removed
 * 1.1.0
     * First public Release
 
