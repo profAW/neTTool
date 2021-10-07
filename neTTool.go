@@ -23,14 +23,14 @@ func main() {
 	fmt.Println("----------------------------------")
 	fmt.Println("neTTool-Version: " + version)
 
-	doAnalysis()
-
+	pcapFile := readConfig()
+	doAnalysis(pcapFile)
+	zipResults("noch leer")
 	helper.CloseApplicationWithOutError()
 
 }
 
-func doAnalysis() {
-
+func readConfig() string {
 	fmt.Println("------------------------------------------------------")
 	fmt.Println("Load Configuration")
 
@@ -47,6 +47,19 @@ func doAnalysis() {
 	fmt.Println("Configuration loaded")
 	fmt.Println("------------------------------------------------------")
 
+	return config.Pcapfile
+}
+
+func zipResults(targetFolder string) {
+	currentTime := time.Now()
+
+	fmt.Println("ToDo: Target folder hinzufügen: " + targetFolder)
+	zipPathAndFile := "result_" + currentTime.Format("2006_01_02_15_04_05") + ".zip"
+	infrastructure.ZipResults("./results", zipPathAndFile)
+}
+
+func doAnalysis(Pcapfile string) {
+
 	if !helper.Exists("./results") {
 		// path/to/whatever does not exist
 		errDir := os.Mkdir("./results", os.ModeDir)
@@ -62,7 +75,7 @@ func doAnalysis() {
 	fmt.Println("Get Network Data")
 
 	data := usecases.UcGetNetworkData{}
-	data.Source = infrastructure.SavedPacketsAdapter{FileAndFolder: config.Pcapfile}
+	data.Source = infrastructure.SavedPacketsAdapter{FileAndFolder: Pcapfile}
 	packetSource := data.Read()
 	connectionsList := data.CreateNetworkData(packetSource)
 
@@ -81,10 +94,6 @@ func doAnalysis() {
 	pnResultExport := infrastructure.SavePNGraphToFsAdapter{FileAndFolder: ""}
 	pnResultExport.PlotData(connectionsList)
 
-	currentTime := time.Now()
-
-	zipPathAndFile := "result_" + currentTime.Format("2006_01_02_15_04_05") + ".zip"
-	infrastructure.ZipResults("./results", zipPathAndFile)
 	fmt.Println("        PN-Analysis created")
 	fmt.Println("    Finish PN Analysis")
 
