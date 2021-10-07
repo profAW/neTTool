@@ -94,7 +94,7 @@ André Wenzel
 ## Version History
 
 * 1.2.0
-  * GUI Added, need for config-fiel removed
+  * GUI Added, need for config-file removed
 * 1.1.0
     * First public Release
 
