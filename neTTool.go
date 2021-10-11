@@ -9,6 +9,7 @@ import (
 	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"neTTool/helper"
 	"neTTool/infrastructure"
@@ -23,7 +24,7 @@ type fileSettings struct {
 	resultDestination string
 }
 
-var version = "neTTool-Version: 1.2.0"
+var version = "neTTool-Version: 1.2.1"
 var mySettings fileSettings
 
 func main() {
@@ -56,7 +57,11 @@ func main() {
 	analysisStatus := binding.NewString()
 	analysisStatusLabel := widget.NewLabelWithData(analysisStatus)
 
-	loadAnalysisFileButton := widget.NewButton("(1) Select a pcap-file for analysis", func() {
+	loadFileButtonText := "Step 1 - Select a pcap-file for analysis"
+	doAnalysisButtonText := "Step 2 - Perform analysis                        "
+	saveBuottonText := "Step 3 - Select folder to save results    "
+
+	loadAnalysisFileButton := widget.NewButtonWithIcon(loadFileButtonText, theme.DocumentIcon(), func() {
 		dialog.ShowFileOpen(func(reader fyne.URIReadCloser, err error) {
 			if err == nil && reader == nil {
 				return
@@ -68,17 +73,18 @@ func main() {
 			path.Set("Source-File loaded: " + reader.URI().Path())
 			mySettings.pcapSource = reader.URI().Path()
 			mySettings.pcapFileName = reader.URI().Name()
+			helper.RemoveContents("./results")
 			analysisStatus.Set("Analysis open")
 		}, myWindow)
 	})
 
-	doAnalysisButton := widget.NewButton("(2) Perform analysis", func() {
+	doAnalysisButton := widget.NewButtonWithIcon(doAnalysisButtonText, theme.MediaPlayIcon(), func() {
 		analysisStatus.Set("Analysis in progress")
 		doAnalysis()
 		analysisStatus.Set("Analysis done")
 	})
 
-	saveResultsButton := widget.NewButton("(3) Select folder to save results", func() {
+	saveResultsButton := widget.NewButtonWithIcon(saveBuottonText, theme.DocumentSaveIcon(), func() {
 		dialog.ShowFolderOpen(func(folder fyne.ListableURI, err error) {
 			if err == nil && folder == nil {
 				return
@@ -94,7 +100,13 @@ func main() {
 		}, myWindow)
 	})
 
-	myWindow.SetContent(container.New(layout.NewVBoxLayout(), &headerLabel, &subHeaderLabel0, &subHeaderLabel1, &subHeaderLabel2, &subHeaderLabel3, loadAnalysisFileButton, sourcePathLabel, doAnalysisButton, analysisStatusLabel, saveResultsButton, destinationPathLabel))
+	loadAnalysisFileButton.Alignment = widget.ButtonAlignLeading
+	doAnalysisButton.Alignment = widget.ButtonAlignLeading
+	saveResultsButton.Alignment = widget.ButtonAlignLeading
+
+	centered := container.New(layout.NewHBoxLayout(), layout.NewSpacer(), &headerLabel, layout.NewSpacer())
+
+	myWindow.SetContent(container.New(layout.NewVBoxLayout(), centered, &subHeaderLabel0, &subHeaderLabel1, &subHeaderLabel2, &subHeaderLabel3, layout.NewSpacer(), loadAnalysisFileButton, sourcePathLabel, doAnalysisButton, analysisStatusLabel, saveResultsButton, destinationPathLabel, layout.NewSpacer()))
 
 	myWindow.Show()
 	myApp.Run()

@@ -29,12 +29,12 @@ Testing purposes you can use the example data inside the folder "release/TestDat
 
 ### Connection Graph
 
-![Networkgraph](results/networkgraph.png)
+![Networkgraph](docu/networkgraph.png)
 
 ### Profinet-Results
 
 Boxplot
-![PN-Boxplot](results/boxplot.jpg)
+![PN-Boxplot](docu/boxplot.jpg)
 
 Statistic-Values
 
@@ -93,6 +93,8 @@ André Wenzel
 
 ## Version History
 
+* 1.2.1
+  * GUI Improvements
 * 1.2.0
   * GUI Added, need for config-file removed
 * 1.1.0
