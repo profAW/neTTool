@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+const pnEtherType = "8892"
+
 type CommonConnection struct {
 	Src             string
 	Dst             string
@@ -57,13 +59,14 @@ func CreateConnectionList(Data map[int]gopacket.Packet) map[string]CommonConnect
 			//fmt.Println("Ethernet layer detected.")
 			ethernetPacket, _ := ethernetLayer.(*layers.Ethernet)
 
-			var key, etherTyp = GetKeyAndEthernetTyp(ethernetPacket)
+			var key, etherType = GetKeyAndEthernetTyp(ethernetPacket)
 
 			_, ok := connection[key]
 			if ok {
 				con := connection[key]
 				con.NumberOfPackets++
-				if etherTyp == "8892" {
+
+				if etherType == pnEtherType {
 					con.Ts = append(con.Ts, packet.Metadata().Timestamp)
 				}
 				connection[key] = con
@@ -71,7 +74,7 @@ func CreateConnectionList(Data map[int]gopacket.Packet) map[string]CommonConnect
 			} else {
 
 				var con CommonConnection
-				con.EthernetType = etherTyp
+				con.EthernetType = etherType
 				con.Src = ethernetPacket.SrcMAC.String()
 				con.Dst = ethernetPacket.DstMAC.String()
 				con.Ts = append(con.Ts, packet.Metadata().Timestamp)
