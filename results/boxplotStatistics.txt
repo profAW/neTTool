@@ -8,15 +8,6 @@ Median         : 2.000000ms
 Unterer Wisker : 1.945000ms
 Min            : 0.068000ms
 ----------------------------------------------
-00:01:05:40:71:f3->ac:64:17:4a:8b:a3|8892
-Max            : 5.159000ms
-Oberer Wisker  : 2.052000ms
-75% Quantil    : 2.012000ms
-Median         : 1.999000ms
-25% Quantil    : 1.985000ms
-Unterer Wisker : 1.945000ms
-Min            : 0.082000ms
-----------------------------------------------
 ac:64:17:4d:ee:75->ac:64:17:4a:8b:a3|8892
 Max            : 6.125000ms
 Oberer Wisker  : 2.036000ms
@@ -34,3 +25,12 @@ Median         : 1.999000ms
 25% Quantil    : 1.986000ms
 Unterer Wisker : 1.949000ms
 Min            : 0.098000ms
+----------------------------------------------
+00:01:05:40:71:f3->ac:64:17:4a:8b:a3|8892
+Max            : 5.159000ms
+Oberer Wisker  : 2.052000ms
+75% Quantil    : 2.012000ms
+Median         : 1.999000ms
+25% Quantil    : 1.985000ms
+Unterer Wisker : 1.945000ms
+Min            : 0.082000ms
