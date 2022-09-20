@@ -93,6 +93,8 @@ André Wenzel
 
 ## Version History
 
+* 1.3.1
+  * PN-Check added
 * 1.3.0
   * Add IPv4 detail analysis for UDP and TCP in connection graph
   * Change direction graph layout a bit to make it look nicer

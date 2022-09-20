@@ -25,7 +25,7 @@ type fileSettings struct {
 	resultDestination string
 }
 
-var version = "neTTool-Version: 1.3.0"
+var version = "neTTool-Version: 1.3.1"
 var mySettings fileSettings
 
 func main() {
