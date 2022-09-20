@@ -11,6 +11,7 @@ import (
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
+	"neTTool/domain"
 	"neTTool/helper"
 	"neTTool/infrastructure"
 	"neTTool/usecases"
@@ -113,6 +114,23 @@ func main() {
 
 }
 
+func checkIfPnIsPresent(Data map[string]domain.CommonConnection) bool {
+	// Test ob es PN-Daten gibt
+	/*
+			Iteration über connectionList
+			Test ob EtherTyp PN enthalen ist
+		    falls ja, boolvar auf true setzen
+	*/
+
+	var doPnAnaylsis = false
+	for _, element := range Data {
+		if element.EthernetType == "8892" {
+			doPnAnaylsis = true
+		}
+	}
+	return doPnAnaylsis
+}
+
 func doAnalysis() {
 
 	if !helper.Exists("./results") {
@@ -137,9 +155,11 @@ func doAnalysis() {
 
 	analysis.ExportConnectionGraph(connectionGraph)
 
-	analysisPN := usecases.UcProfiNETAnalysis{}
-	connectionsList = analysisPN.CalcProfiNetDeltaTimeInMS(connectionsList)
-	pnResultExport := infrastructure.SavePNGraphToFsAdapter{FileAndFolder: ""}
-	pnResultExport.PlotData(connectionsList)
+	if checkIfPnIsPresent(connectionsList) {
+		analysisPN := usecases.UcProfiNETAnalysis{}
+		connectionsList = analysisPN.CalcProfiNetDeltaTimeInMS(connectionsList)
+		pnResultExport := infrastructure.SavePNGraphToFsAdapter{FileAndFolder: ""}
+		pnResultExport.PlotData(connectionsList)
+	}
 
 }
