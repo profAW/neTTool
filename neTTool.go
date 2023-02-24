@@ -115,16 +115,10 @@ func main() {
 }
 
 func checkIfPnIsPresent(Data map[string]domain.CommonConnection) bool {
-	// Test ob es PN-Daten gibt
-	/*
-			Iteration über connectionList
-			Test ob EtherTyp PN enthalen ist
-		    falls ja, boolvar auf true setzen
-	*/
 
 	var doPnAnaylsis = false
 	for _, element := range Data {
-		if element.EthernetType == "8892" {
+		if element.EthernetType == domain.ProfinetEthernettype {
 			doPnAnaylsis = true
 		}
 	}

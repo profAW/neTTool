@@ -93,6 +93,8 @@ André Wenzel
 
 ## Version History
 
+* 1.3.2
+  * Update all packages to fix vulnerability
 * 1.3.1
   * PN-Check added
 * 1.3.0

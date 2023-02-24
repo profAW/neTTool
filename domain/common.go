@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-const pnEtherType = "8892"
+const ProfinetEthernettype = "8892"
 
 type CommonConnection struct {
 	MacSrc          string
@@ -92,7 +92,7 @@ func CreateConnectionList(Data map[int]gopacket.Packet) map[string]CommonConnect
 				con := connection[key]
 				con.NumberOfPackets++
 
-				if etherType == pnEtherType {
+				if etherType == ProfinetEthernettype {
 					con.Ts = append(con.Ts, packet.Metadata().Timestamp)
 				}
 				connection[key] = con

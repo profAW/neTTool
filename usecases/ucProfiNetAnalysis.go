@@ -32,7 +32,7 @@ func (e UcProfiNETAnalysis) CalcProfiNetDeltaTimeInMS(Data map[string]domain.Com
 }
 
 func CalcDetlaTs(con domain.CommonConnection, result chan domain.CommonConnection) {
-	if con.EthernetType == "8892" {
+	if con.EthernetType == domain.ProfinetEthernettype {
 		con.DeltaTS = getDeltaTimeInMs(con.Ts)
 	}
 	result <- con
