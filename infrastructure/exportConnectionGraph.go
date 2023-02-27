@@ -13,6 +13,10 @@ type SaveConnectionGraphToFsAdapter struct {
 	FileAndFolder string
 }
 
+type SaveNodeGraphToFsAdapter struct {
+	FileAndFolder string
+}
+
 func check(e error) {
 	if e != nil {
 		panic(e)
@@ -33,6 +37,7 @@ func (e SaveConnectionGraphToFsAdapter) ExportConnectionGraph(conncetionGraph st
 
 	w := bufio.NewWriter(f)
 	_, err = w.WriteString(conncetionGraph)
+
 	if err != nil {
 		return
 	}
@@ -49,7 +54,30 @@ func (e SaveConnectionGraphToFsAdapter) ExportConnectionGraph(conncetionGraph st
 	if err != nil {
 		return
 	}
+}
 
-	//dot -Tpng  > test.png && open test.png
-	//fmt.Println("        Networkgraph created")
+func (e SaveNodeGraphToFsAdapter) ExportNodeGraph(nodes []string) {
+	filename := e.FileAndFolder
+	f, err := os.Create(filename)
+	check(err)
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+
+		}
+	}(f)
+
+	w := bufio.NewWriter(f)
+
+	for _, value := range nodes {
+		_, err = w.WriteString(value)
+		if err != nil {
+			return
+		}
+	}
+	err = w.Flush()
+	if err != nil {
+		fmt.Println("Error Export Node Graph")
+		return
+	}
 }

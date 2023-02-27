@@ -23,6 +23,11 @@ type CommonConnection struct {
 	SocketType      string
 }
 
+type Node struct {
+	Mac string
+	IP  string
+}
+
 func (e CommonConnection) GetKey() string {
 	return e.MacDst + "->" + e.MacSrc + "|" + e.EthernetType
 }
@@ -66,15 +71,20 @@ func GetLayer4Key(packet gopacket.Packet) string {
 	}
 	if tcpLayer != nil {
 		tcp, _ := tcpLayer.(*layers.TCP)
-		key += " | UDP " + tcp.SrcPort.String() + " --> " + tcp.DstPort.String()
+		key += " | TCP " + tcp.SrcPort.String() + " --> " + tcp.DstPort.String()
+	}
+
+	if tcpLayer == nil && udpLayer == nil {
+		key += " | IPv4 "
 	}
 
 	return key
 }
 
-func CreateConnectionList(Data map[int]gopacket.Packet) map[string]CommonConnection {
+func CreateConnectionList(Data map[int]gopacket.Packet) (map[string]CommonConnection, map[string]Node) {
 
 	var connection = make(map[string]CommonConnection) // Map mit flow connections and number of connections
+	var nodes = make(map[string]Node)                  // Map mit flow connections and number of connections
 
 	for _, packet := range Data {
 
@@ -131,30 +141,46 @@ func CreateConnectionList(Data map[int]gopacket.Packet) map[string]CommonConnect
 					ipPacket := ipLayer.(*layers.IPv4)
 
 					con.IPSrc = ipPacket.SrcIP.String()
+					//println(ipPacket.SrcIP.String())
 					con.IPDst = ipPacket.DstIP.String()
 
 					udpLayer := packet.Layer(layers.LayerTypeUDP)
 					tcpLayer := packet.Layer(layers.LayerTypeTCP)
+
+					con.EthernetType = etherType
 
 					if udpLayer != nil {
 						con.SocketType = "UDP"
 						udp, _ := udpLayer.(*layers.UDP)
 						con.PortDst = udp.DstPort.String()
 						con.PortSrc = udp.SrcPort.String()
+						con.EthernetType = etherType + "|" + con.SocketType
 					}
 					if tcpLayer != nil {
 						con.SocketType = "TCP"
 						tcp, _ := tcpLayer.(*layers.TCP)
 						con.PortDst = tcp.DstPort.String()
 						con.PortSrc = tcp.SrcPort.String()
+						con.EthernetType = etherType + "|" + con.SocketType
 					}
-					con.EthernetType = etherType + "|" + con.SocketType
+
 					connection[key2] = con
+
+					var key3 string
+					key3 = con.MacDst + "-" + con.IPDst
+					var the_node Node
+					the_node.IP = con.IPDst
+					the_node.Mac = con.MacDst
+					nodes[key3] = the_node
+
+					key3 = con.MacSrc + "-" + con.IPSrc
+					the_node.IP = con.IPSrc
+					the_node.Mac = con.MacSrc
+					nodes[key3] = the_node
 				}
 			}
-
 		}
-
 	}
-	return connection
+
+	return connection, nodes
 }

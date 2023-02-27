@@ -9,6 +9,7 @@ The aim of the tool is to analyse profiNET connections as part of a laboratory s
 * graphviz to visualize the connections
 * Golang, if you want to build your own version
 * Wireshark to capture network traffic
+* plantuml for node overview
 
 ## Installing
 
@@ -27,16 +28,25 @@ The aim of the tool is to analyse profiNET connections as part of a laboratory s
 
 Testing purposes you can use the example data inside the folder "release/TestData". The results for the file "versuchsaufbau01.pcaapng" are shown in the following graphics.
 
-### Connection Graph
+### Connection Graph 
+Result: networkgraph.png and networkgraph.gv (dot-source-file)
+
+Shows the connections between the participants per protocol type.
+
+Please note
+* The arrows usually indicate the number of exchanged packets.
+* IPv4-UDP and TCP contain, in addition to the number of packets, the port numbers used for communication and details of the communication protocol used.
+* IPv4 contains what does not belong to IPv4-UDP or IPv4-TCP.
 
 ![Networkgraph](docu/networkgraph.png)
 
 ### Profinet-Results
+Result: boxplot.pdf and boxplotStatistics.txt
 
-Boxplot
+Boxplot of the PN communication (timing) between to nodes. 
 ![PN-Boxplot](docu/boxplot.jpg)
 
-Statistic-Values
+Statistic-Values of the Boxplot
 
 ----------------------------------------------
 ac:64:17:4a:8b:a3->ac:64:17:4d:ee:75|8892
@@ -78,6 +88,34 @@ Median         : 1.999000ms
 Unterer Wisker : 1.945000ms
 Min            : 0.082000ms
 
+### Nodes
+Result: nodes.plantuml
+
+Plantuml file showing all participants involved in communication.
+
+```
+@startuml
+nwdiag {
+network test_network {
+node_0[address=  " 00:01:05:40:71:f3 , 192.168.100.132 "]
+node_1[address=  " ac:64:17:4a:8b:a3 , 192.168.100.100 "]
+node_2[address=  " ac:64:17:4d:ee:75 , 192.168.100.134 "]
+node_3[address=  " 20:87:56:bc:20:5e , 192.168.100.125 "]
+node_4[address=  " a0:ce:c8:17:80:fa , 192.168.100.42 "]
+}
+' Multicast-Nodes
+' Multicast: node [address=  " 01:00:5e:00:00:fb , 224.0.0.251 "]
+' Multicast: node [address=  " 01:00:5e:00:00:02 , 224.0.0.2 "]
+' Multicast: node [address=  " 01:00:5e:7f:ff:fa , 239.255.255.250 "]
+' Multicast: node [address=  " 01:00:5e:00:00:fc , 224.0.0.252 "]
+' Multicast: node [address=  " ff:ff:ff:ff:ff:ff , 192.168.100.255 "]
+' Multicast: node [address=  " 01:00:5e:00:00:16 , 224.0.0.22 "]
+' Multicast: node [address=  " ff:ff:ff:ff:ff:ff , 255.255.255.255 "]
+@enduml
+```
+The file can be converted into a graphic via plantuml.
+![network.png](docu%2Fnetwork.png)
+
 ## Cross compile
 on Mac-OS for Windows OS
 
@@ -93,6 +131,9 @@ André Wenzel
 
 ## Version History
 
+* 1.3.3 
+  * Node export
+  * Spell issues
 * 1.3.2
   * Update all packages to fix vulnerability
 * 1.3.1

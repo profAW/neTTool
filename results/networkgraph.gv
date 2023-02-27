@@ -3,48 +3,57 @@ digraph  {
 
 	subgraph cluster_s1 {
 		label="ARP";
-		n46[label="00:01:05:40:71:f3"];
-		n11[label="20:87:56:bc:20:5e"];
-		n38[label="ac:64:17:4a:8b:a3"];
-		n43[label="ac:64:17:4d:ee:75"];
-		n12[label="ff:ff:ff:ff:ff:ff"];
-		n46->n38[label="1"];
-		n11->n12[label="5"];
-		n38->n12[label="2"];
-		n43->n38[label="1"];
+		n47[label="00:01:05:40:71:f3"];
+		n53[label="20:87:56:bc:20:5e"];
+		n43[label="ac:64:17:4a:8b:a3"];
+		n42[label="ac:64:17:4d:ee:75"];
+		n54[label="ff:ff:ff:ff:ff:ff"];
+		n47->n43[label="1"];
+		n53->n54[label="5"];
+		n43->n54[label="2"];
+		n42->n43[label="1"];
 		
 	}
 	subgraph cluster_s8 {
 		label="EAPOL";
-		n23[label="01:80:c2:00:00:03"];
-		n22[label="20:87:56:bc:20:5f"];
-		n22->n23[label="1"];
+		n25[label="01:80:c2:00:00:03"];
+		n24[label="20:87:56:bc:20:5f"];
+		n24->n25[label="1"];
 		
 	}
 	subgraph cluster_s2 {
 		label="IPv4";
-		n20[label="00:01:05:40:71:f3"];
-		n33[label="01:00:5e:00:00:02"];
-		n55[label="01:00:5e:00:00:16"];
-		n36[label="01:00:5e:00:00:fb"];
-		n60[label="01:00:5e:00:00:fc"];
-		n58[label="01:00:5e:7f:ff:fa"];
-		n32[label="20:87:56:bc:20:5e"];
-		n28[label="a0:ce:c8:17:80:fa"];
-		n31[label="ac:64:17:4a:8b:a3"];
-		n53[label="ac:64:17:4d:ee:75"];
-		n21[label="ff:ff:ff:ff:ff:ff"];
-		n20->n21[label="1"];
-		n20->n31[label="4"];
-		n32->n33[label="3"];
-		n28->n21[label="4"];
-		n28->n36[label="4"];
-		n28->n55[label="3"];
-		n28->n58[label="13"];
-		n28->n60[label="1"];
-		n31->n20[label="4"];
-		n31->n53[label="5"];
-		n53->n31[label="5"];
+		n14[label="00:01:05:40:71:f3 \n "];
+		n55[label="00:01:05:40:71:f3 \n 192.168.100.132"];
+		n34[label="01:00:5e:00:00:02 \n "];
+		n36[label="01:00:5e:00:00:02 \n 224.0.0.2"];
+		n21[label="01:00:5e:00:00:16 \n "];
+		n41[label="01:00:5e:00:00:16 \n 224.0.0.22"];
+		n48[label="01:00:5e:00:00:fb \n "];
+		n20[label="01:00:5e:00:00:fc \n "];
+		n59[label="01:00:5e:7f:ff:fa \n "];
+		n33[label="20:87:56:bc:20:5e \n "];
+		n35[label="20:87:56:bc:20:5e \n 192.168.100.125"];
+		n19[label="a0:ce:c8:17:80:fa \n "];
+		n40[label="a0:ce:c8:17:80:fa \n 192.168.100.42"];
+		n13[label="ac:64:17:4a:8b:a3 \n "];
+		n18[label="ac:64:17:4d:ee:75 \n "];
+		n15[label="ff:ff:ff:ff:ff:ff \n "];
+		n56[label="ff:ff:ff:ff:ff:ff \n 255.255.255.255"];
+		n14->n15[label="1"];
+		n14->n13[label="4"];
+		n55->n56[label="1"];
+		n33->n34[label="3"];
+		n35->n36[label="3"];
+		n19->n20[label="1"];
+		n19->n21[label="3"];
+		n19->n48[label="4"];
+		n19->n15[label="4"];
+		n19->n59[label="13"];
+		n40->n41[label="3"];
+		n13->n14[label="4"];
+		n13->n18[label="5"];
+		n18->n13[label="5"];
 		
 	}
 	subgraph cluster_s4 {
@@ -53,94 +62,85 @@ digraph  {
 	}
 	subgraph cluster_s3 {
 		label="IPv4-UDP";
-		n19[label="00:01:05:40:71:f3 \n 192.168.100.132"];
-		n54[label="01:00:5e:00:00:fb \n 224.0.0.251"];
-		n56[label="01:00:5e:00:00:fc \n 224.0.0.252"];
-		n47[label="01:00:5e:7f:ff:fa \n 239.255.255.250"];
-		n29[label="a0:ce:c8:17:80:fa \n 192.168.100.42"];
-		n18[label="ac:64:17:4a:8b:a3 \n 192.168.100.100"];
-		n27[label="ac:64:17:4d:ee:75 \n 192.168.100.134"];
-		n30[label="ff:ff:ff:ff:ff:ff \n 192.168.100.255"];
-		n19->n18[label="50000 \n-> \n63189 \n 3"];
-		n19->n18[label="50001 \n-> \n34964(profinet-cm) \n 1"];
-		n29->n30[label="1743(cinegrfx-lm) \n-> \n1740(encore) \n 1"];
-		n29->n30[label="1743(cinegrfx-lm) \n-> \n1741(cisco-net-mgmt) \n 1"];
-		n29->n47[label="62145 \n-> \n1900(ssdp) \n 13"];
-		n29->n54[label="5353(mdns) \n-> \n5353(mdns) \n 4"];
-		n29->n30[label="1743(cinegrfx-lm) \n-> \n1742(3Com-nsd) \n 1"];
-		n29->n56[label="62135 \n-> \n5355(llmnr) \n 1"];
-		n29->n30[label="1743(cinegrfx-lm) \n-> \n1743(cinegrfx-lm) \n 1"];
-		n18->n19[label="63189 \n-> \n34964(profinet-cm) \n 1"];
-		n18->n27[label="63189 \n-> \n49155 \n 3"];
-		n18->n27[label="63189 \n-> \n34964(profinet-cm) \n 1"];
-		n18->n19[label="56341 \n-> \n50001 \n 1"];
-		n18->n27[label="56341 \n-> \n49153 \n 1"];
-		n18->n19[label="63189 \n-> \n50000 \n 2"];
-		n27->n18[label="49155 \n-> \n63189 \n 4"];
-		n27->n18[label="49153 \n-> \n34964(profinet-cm) \n 1"];
+		n31[label="00:01:05:40:71:f3 \n 192.168.100.132"];
+		n23[label="01:00:5e:00:00:fb \n 224.0.0.251"];
+		n12[label="01:00:5e:00:00:fc \n 224.0.0.252"];
+		n50[label="01:00:5e:7f:ff:fa \n 239.255.255.250"];
+		n11[label="a0:ce:c8:17:80:fa \n 192.168.100.42"];
+		n27[label="ac:64:17:4a:8b:a3 \n 192.168.100.100"];
+		n26[label="ac:64:17:4d:ee:75 \n 192.168.100.134"];
+		n22[label="ff:ff:ff:ff:ff:ff \n 192.168.100.255"];
+		n31->n27[label="50000 \n-> \n63189 \n 3"];
+		n31->n27[label="50001 \n-> \n34964(profinet-cm) \n 1"];
+		n11->n12[label="62135 \n-> \n5355(llmnr) \n 1"];
+		n11->n22[label="1743(cinegrfx-lm) \n-> \n1740(encore) \n 1"];
+		n11->n23[label="5353(mdns) \n-> \n5353(mdns) \n 4"];
+		n11->n22[label="1743(cinegrfx-lm) \n-> \n1743(cinegrfx-lm) \n 1"];
+		n11->n50[label="62145 \n-> \n1900(ssdp) \n 13"];
+		n11->n22[label="1743(cinegrfx-lm) \n-> \n1741(cisco-net-mgmt) \n 1"];
+		n11->n22[label="1743(cinegrfx-lm) \n-> \n1742(3Com-nsd) \n 1"];
+		n27->n26[label="56341 \n-> \n49153 \n 1"];
+		n27->n31[label="63189 \n-> \n34964(profinet-cm) \n 1"];
+		n27->n26[label="63189 \n-> \n49155 \n 3"];
+		n27->n26[label="63189 \n-> \n34964(profinet-cm) \n 1"];
+		n27->n31[label="56341 \n-> \n50001 \n 1"];
+		n27->n31[label="63189 \n-> \n50000 \n 2"];
+		n26->n27[label="49153 \n-> \n34964(profinet-cm) \n 1"];
+		n26->n27[label="49155 \n-> \n63189 \n 4"];
 		
 	}
 	subgraph cluster_s5 {
 		label="IPv6";
-		n37[label="33:33:00:00:00:01"];
-		n26[label="33:33:00:00:00:02"];
-		n14[label="33:33:00:00:00:16"];
-		n48[label="33:33:00:00:00:fb"];
-		n15[label="33:33:00:01:00:02"];
-		n57[label="33:33:00:01:00:03"];
-		n59[label="33:33:ff:94:c1:af"];
-		n13[label="a0:ce:c8:17:80:fa"];
-		n13->n14[label="5"];
-		n13->n15[label="6"];
-		n13->n26[label="3"];
-		n13->n37[label="1"];
-		n13->n48[label="4"];
-		n13->n57[label="1"];
-		n13->n59[label="1"];
+		n58[label="33:33:00:00:00:01"];
+		n57[label="33:33:00:00:00:02"];
+		n29[label="33:33:00:00:00:16"];
+		n30[label="33:33:00:00:00:fb"];
+		n60[label="33:33:00:01:00:02"];
+		n32[label="33:33:00:01:00:03"];
+		n39[label="33:33:ff:94:c1:af"];
+		n28[label="a0:ce:c8:17:80:fa"];
+		n28->n29[label="5"];
+		n28->n30[label="4"];
+		n28->n32[label="1"];
+		n28->n39[label="1"];
+		n28->n57[label="3"];
+		n28->n58[label="1"];
+		n28->n60[label="6"];
 		
 	}
 	subgraph cluster_s9 {
 		label="LinkLayerDiscovery";
-		n39[label="00:0e:8c:db:8c:55"];
-		n40[label="01:80:c2:00:00:0e"];
-		n41[label="20:87:56:bc:20:5f"];
-		n42[label="a0:ce:c8:17:80:fa"];
-		n39->n40[label="4"];
-		n41->n40[label="3"];
-		n42->n40[label="3"];
+		n37[label="00:0e:8c:db:8c:55"];
+		n38[label="01:80:c2:00:00:0e"];
+		n49[label="20:87:56:bc:20:5f"];
+		n44[label="a0:ce:c8:17:80:fa"];
+		n37->n38[label="4"];
+		n49->n38[label="3"];
+		n44->n38[label="3"];
 		
 	}
 	subgraph cluster_s10 {
 		label="Notdef";
-		n49[label="00:01:05:40:71:f3"];
-		n45[label="01:00:5e:00:00:02"];
-		n17[label="01:00:5e:00:00:16"];
-		n44[label="20:87:56:bc:20:5e"];
-		n16[label="a0:ce:c8:17:80:fa"];
-		n50[label="ff:ff:ff:ff:ff:ff"];
-		n49->n50[label="1"];
-		n44->n45[label="3"];
-		n16->n17[label="3"];
 		
 	}
 	subgraph cluster_s6 {
 		label="PN";
-		n24[label="00:01:05:40:71:f3"];
-		n35[label="01:0e:cf:00:00:00"];
-		n25[label="ac:64:17:4a:8b:a3"];
-		n34[label="ac:64:17:4d:ee:75"];
-		n24->n25[label="6815"];
-		n25->n34[label="8012"];
-		n25->n35[label="3"];
-		n25->n24[label="6814"];
-		n34->n25[label="8019"];
+		n52[label="00:01:05:40:71:f3"];
+		n51[label="01:0e:cf:00:00:00"];
+		n16[label="ac:64:17:4a:8b:a3"];
+		n17[label="ac:64:17:4d:ee:75"];
+		n52->n16[label="6815"];
+		n16->n17[label="8012"];
+		n16->n51[label="3"];
+		n16->n52[label="6814"];
+		n17->n16[label="8019"];
 		
 	}
 	subgraph cluster_s7 {
 		label="Red";
-		n52[label="01:15:4e:00:00:01"];
-		n51[label="20:87:56:bc:20:5f"];
-		n51->n52[label="64"];
+		n46[label="01:15:4e:00:00:01"];
+		n45[label="20:87:56:bc:20:5f"];
+		n45->n46[label="64"];
 		
 	}
 	

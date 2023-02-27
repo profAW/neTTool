@@ -25,7 +25,7 @@ type fileSettings struct {
 	resultDestination string
 }
 
-var version = "neTTool-Version: 1.3.1"
+var version = "neTTool-Version: 1.3.3"
 var mySettings fileSettings
 
 func main() {
@@ -44,7 +44,7 @@ func main() {
 	myWindow.Resize(fyne.NewSize(800, 400))
 	headerLabel := canvas.Text{Text: "neTTool", TextSize: 40.0, Alignment: fyne.TextAlignCenter}
 
-	subHeaderLabel0 := canvas.Text{Text: "A small tool to analysis profiNET connections", TextSize: 13.0, Alignment: fyne.TextAlignCenter}
+	subHeaderLabel0 := canvas.Text{Text: "A small tool for analysing profiNET connections", TextSize: 13.0, Alignment: fyne.TextAlignCenter}
 	subHeaderLabel1 := canvas.Text{Text: version, TextSize: 8.0, Alignment: fyne.TextAlignCenter}
 	subHeaderLabel2 := canvas.Text{Text: "HAW Hamburg", TextSize: 10.0, Alignment: fyne.TextAlignTrailing}
 	subHeaderLabel3 := canvas.Text{Text: "Prof. Dr.-Ing. A. Wenzel", TextSize: 10.0, Alignment: fyne.TextAlignTrailing}
@@ -141,19 +141,25 @@ func doAnalysis() {
 	data := usecases.UcGetNetworkData{}
 	data.Source = infrastructure.SavedPacketsAdapter{FileAndFolder: mySettings.pcapSource}
 	packetSource := data.Read()
-	connectionsList := data.CreateNetworkData(packetSource)
+	connectionsList, nodeList := data.CreateNetworkData(packetSource)
 
 	graphDestination := infrastructure.SaveConnectionGraphToFsAdapter{FileAndFolder: "./results/networkgraph.gv"}
+	nodeDestination := infrastructure.SaveNodeGraphToFsAdapter{FileAndFolder: "./results/nodes.plantuml"}
 	analysis := usecases.UcConnectionAnalysis{Destination: graphDestination}
+	analysisV2 := usecases.UcNodeAnalysis{Destination: nodeDestination}
+
 	connectionGraph := analysis.MakeConnetionGraph(connectionsList)
+	nodeGraph := analysisV2.MakeNodeGraph(nodeList)
 
 	analysis.ExportConnectionGraph(connectionGraph)
+	analysisV2.ExportNodeGraph(nodeGraph)
 
 	if checkIfPnIsPresent(connectionsList) {
 		analysisPN := usecases.UcProfiNETAnalysis{}
 		connectionsList = analysisPN.CalcProfiNetDeltaTimeInMS(connectionsList)
 		pnResultExport := infrastructure.SavePNGraphToFsAdapter{FileAndFolder: ""}
 		pnResultExport.PlotData(connectionsList)
+
 	}
 
 }

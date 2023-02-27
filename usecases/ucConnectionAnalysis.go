@@ -7,14 +7,22 @@ import (
 	"strings"
 )
 
-//ExportConnectionGraphPort export connection graph to some output
+// ExportConnectionGraphPort export connection graph to some output
 type ExportConnectionGraphPort interface {
 	ExportConnectionGraph(conncetionGraph string)
+}
+
+// ExportConnectionGraphPort export connection graph to some output
+type ExportNodeGraphPort interface {
+	ExportNodeGraph(nodes []string)
 }
 
 // UcConnectionAnalysis Use-Case to read network data from source
 type UcConnectionAnalysis struct {
 	Destination ExportConnectionGraphPort
+}
+type UcNodeAnalysis struct {
+	Destination ExportNodeGraphPort
 }
 
 // MakeConnetionGraph - create graphiv connection graph
@@ -61,6 +69,12 @@ func (e UcConnectionAnalysis) MakeConnetionGraph(connections map[string]domain.C
 		res := *p
 
 		switch value.EthernetType {
+		case "IPv4":
+			n1 := res.Node(value.MacSrc + " \n " + value.IPSrc)
+			n2 := res.Node(value.MacDst + " \n " + value.IPDst)
+
+			res.Edge(n1, n2).Attr("label", strconv.Itoa(value.NumberOfPackets))
+
 		case "IPv4|UDP":
 			n1 := res.Node(value.MacSrc + " \n " + value.IPSrc)
 			n2 := res.Node(value.MacDst + " \n " + value.IPDst)
@@ -85,7 +99,41 @@ func (e UcConnectionAnalysis) MakeConnetionGraph(connections map[string]domain.C
 	return myGraph
 }
 
+func (e UcNodeAnalysis) MakeNodeGraph(nodes map[string]domain.Node) []string {
+
+	var i int
+	i = 0
+	var myGraph []string
+	myGraph = append(myGraph, "@startuml \r")
+	myGraph = append(myGraph, "  nwdiag { \r")
+	myGraph = append(myGraph, "	network test_network { \r")
+
+	var multicast []string
+
+	for _, value := range nodes {
+
+		if strings.HasPrefix(value.Mac, "ff:ff") || strings.HasPrefix(value.Mac, "01:00:5e") {
+			multicast = append(multicast, " ' Multicast: node [address=  \" "+value.Mac+" , "+value.IP+" \"] \r")
+		} else {
+			myGraph = append(myGraph, "          node_"+strconv.Itoa(i)+"[address=  \" "+value.Mac+" , "+value.IP+" \"] \r")
+			i++
+		}
+	}
+
+	myGraph = append(myGraph, "  }\r")
+	myGraph = append(myGraph, "' Multicast-Nodes\r")
+	for _, value := range multicast {
+		myGraph = append(myGraph, value)
+	}
+	myGraph = append(myGraph, "@enduml")
+
+	return myGraph
+}
+
 // ExportConnectionGraph so a destination
 func (e UcConnectionAnalysis) ExportConnectionGraph(conncetionGraph string) {
 	e.Destination.ExportConnectionGraph(conncetionGraph)
+}
+func (e UcNodeAnalysis) ExportNodeGraph(nodes []string) {
+	e.Destination.ExportNodeGraph(nodes)
 }

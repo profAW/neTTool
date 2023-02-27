@@ -19,6 +19,6 @@ func (e UcGetNetworkData) Read() map[int]gopacket.Packet {
 	return e.Source.Read()
 }
 
-func (e UcGetNetworkData) CreateNetworkData(Data map[int]gopacket.Packet) map[string]domain.CommonConnection {
+func (e UcGetNetworkData) CreateNetworkData(Data map[int]gopacket.Packet) (map[string]domain.CommonConnection, map[string]domain.Node) {
 	return domain.CreateConnectionList(Data)
 }
