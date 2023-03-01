@@ -25,8 +25,9 @@ type fileSettings struct {
 	resultDestination string
 }
 
-var version = "neTTool-Version: 1.3.3"
+var version = "neTTool-Version: 1.3.4"
 var mySettings fileSettings
+var tmpFolder = "./results"
 
 func main() {
 
@@ -46,7 +47,7 @@ func main() {
 
 	subHeaderLabel0 := canvas.Text{Text: "A small tool for analysing profiNET connections", TextSize: 13.0, Alignment: fyne.TextAlignCenter}
 	subHeaderLabel1 := canvas.Text{Text: version, TextSize: 8.0, Alignment: fyne.TextAlignCenter}
-	subHeaderLabel2 := canvas.Text{Text: "HAW Hamburg", TextSize: 10.0, Alignment: fyne.TextAlignTrailing}
+	subHeaderLabel2 := canvas.Text{Text: "HAW Hamburg (university of applied sciences)", TextSize: 10.0, Alignment: fyne.TextAlignTrailing}
 	subHeaderLabel3 := canvas.Text{Text: "Prof. Dr.-Ing. A. Wenzel", TextSize: 10.0, Alignment: fyne.TextAlignTrailing}
 
 	path := binding.NewString()
@@ -74,7 +75,7 @@ func main() {
 			path.Set("Source-File loaded: " + reader.URI().Path())
 			mySettings.pcapSource = reader.URI().Path()
 			mySettings.pcapFileName = reader.URI().Name()
-			helper.RemoveContents("./results")
+			helper.RemoveContents(tmpFolder)
 			analysisStatus.Set("Analysis open")
 		}, myWindow)
 	})
@@ -97,7 +98,7 @@ func main() {
 			currentTime := time.Now()
 			mySettings.resultDestination = folder.Path() + "/neTTool_" + mySettings.pcapFileName + "_" + currentTime.Format("2006_01_02_15_04_05") + ".zip"
 			pathDestination.Set("Destination-File saved @: " + mySettings.resultDestination)
-			infrastructure.ZipResults("./results", mySettings.resultDestination)
+			infrastructure.ZipResults(tmpFolder, mySettings.resultDestination)
 		}, myWindow)
 	})
 
@@ -127,9 +128,9 @@ func checkIfPnIsPresent(Data map[string]domain.CommonConnection) bool {
 
 func doAnalysis() {
 
-	if !helper.Exists("./results") {
+	if !helper.Exists(tmpFolder) {
 		// path/to/whatever does not exist
-		errDir := os.Mkdir("./results", os.ModeDir)
+		errDir := os.Mkdir(tmpFolder, os.ModeDir)
 
 		if errDir != nil {
 			fmt.Println("Result-Folder could not be created, please run neTTool with admin permission.")
@@ -138,28 +139,27 @@ func doAnalysis() {
 		}
 	}
 
+	tmpFolder = tmpFolder + "/"
+
+	// Load and analyse network data
 	data := usecases.UcGetNetworkData{}
 	data.Source = infrastructure.SavedPacketsAdapter{FileAndFolder: mySettings.pcapSource}
 	packetSource := data.Read()
 	connectionsList, nodeList := data.CreateNetworkData(packetSource)
 
-	graphDestination := infrastructure.SaveConnectionGraphToFsAdapter{FileAndFolder: "./results/networkgraph.gv"}
-	nodeDestination := infrastructure.SaveNodeGraphToFsAdapter{FileAndFolder: "./results/nodes.plantuml"}
-	analysis := usecases.UcConnectionAnalysis{Destination: graphDestination}
-	analysisV2 := usecases.UcNodeAnalysis{Destination: nodeDestination}
+	// export analyse results
+	graphDestination := infrastructure.SaveConnectionGraphToFsAdapter{FileAndFolder: tmpFolder}
+	connectionPreparation := usecases.UcPreparationConnections{Destination: graphDestination}
+	connectionPreparation.DoExport(connectionsList)
 
-	connectionGraph := analysis.MakeConnetionGraph(connectionsList)
-	nodeGraph := analysisV2.MakeNodeGraph(nodeList)
-
-	analysis.ExportConnectionGraph(connectionGraph)
-	analysisV2.ExportNodeGraph(nodeGraph)
+	nodeDestination := infrastructure.SaveNodeGraphToFsAdapter{FileAndFolder: tmpFolder}
+	nodePreparation := usecases.UcPreparationNodes{Destination: nodeDestination}
+	nodePreparation.DoExport(nodeList)
 
 	if checkIfPnIsPresent(connectionsList) {
-		analysisPN := usecases.UcProfiNETAnalysis{}
-		connectionsList = analysisPN.CalcProfiNetDeltaTimeInMS(connectionsList)
-		pnResultExport := infrastructure.SavePNGraphToFsAdapter{FileAndFolder: ""}
-		pnResultExport.PlotData(connectionsList)
-
+		profinetDestination := infrastructure.SavePNGraphToFsAdapter{FileAndFolder: tmpFolder}
+		profinetPreparation := usecases.UcProfiNETAnalysis{Destination: profinetDestination}
+		profinetPreparation.DoExport(connectionsList)
 	}
 
 }

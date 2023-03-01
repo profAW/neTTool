@@ -6,8 +6,19 @@ import (
 	"time"
 )
 
+// ExportNodeGraphPort export connection graph to some output
+type ExportPNhPort interface {
+	DoExport(Daten map[string]domain.CommonConnection)
+}
+
 // UcProfiNETAnalysis PN-Data-Analysis
 type UcProfiNETAnalysis struct {
+	Destination ExportPNhPort
+}
+
+func (e UcProfiNETAnalysis) DoExport(Daten map[string]domain.CommonConnection) {
+	Daten = e.CalcProfiNetDeltaTimeInMS(Daten)
+	e.Destination.DoExport(Daten)
 }
 
 // CalcProfiNetDeltaTimeInMS Calculate the TimeDifference between two PN packages
@@ -68,6 +79,5 @@ func getDeltaTimeInMs(timestamps []time.Time) []float64 {
 		lastTs = value
 
 	}
-	//fmt.Println(deltaTimeInMs)
 	return deltaTimeInMs
 }

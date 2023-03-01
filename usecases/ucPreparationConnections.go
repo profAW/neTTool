@@ -12,21 +12,32 @@ type ExportConnectionGraphPort interface {
 	ExportConnectionGraph(conncetionGraph string)
 }
 
-// ExportConnectionGraphPort export connection graph to some output
+// ExportNodeGraphPort export connection graph to some output
 type ExportNodeGraphPort interface {
 	ExportNodeGraph(nodes []string)
 }
 
-// UcConnectionAnalysis Use-Case to read network data from source
-type UcConnectionAnalysis struct {
+// UcPreparationConnections Use-Case to read network data from source
+type UcPreparationConnections struct {
 	Destination ExportConnectionGraphPort
 }
-type UcNodeAnalysis struct {
+
+type UcPreparationNodes struct {
 	Destination ExportNodeGraphPort
 }
 
+func (e UcPreparationConnections) DoExport(connections map[string]domain.CommonConnection) {
+	result := e.MakeConnetionGraph(connections)
+	e.ExportConnectionGraph(result)
+}
+
+func (e UcPreparationNodes) DoExport(nodes map[string]domain.Node) {
+	result := e.MakeNodeGraph(nodes)
+	e.ExportNodeGraph(result)
+}
+
 // MakeConnetionGraph - create graphiv connection graph
-func (e UcConnectionAnalysis) MakeConnetionGraph(connections map[string]domain.CommonConnection) string {
+func (e UcPreparationConnections) MakeConnetionGraph(connections map[string]domain.CommonConnection) string {
 
 	g := dot.NewGraph(dot.Directed)
 	arp := g.Subgraph("ARP", dot.ClusterOption{})
@@ -99,7 +110,7 @@ func (e UcConnectionAnalysis) MakeConnetionGraph(connections map[string]domain.C
 	return myGraph
 }
 
-func (e UcNodeAnalysis) MakeNodeGraph(nodes map[string]domain.Node) []string {
+func (e UcPreparationNodes) MakeNodeGraph(nodes map[string]domain.Node) []string {
 
 	var i int
 	i = 0
@@ -131,9 +142,9 @@ func (e UcNodeAnalysis) MakeNodeGraph(nodes map[string]domain.Node) []string {
 }
 
 // ExportConnectionGraph so a destination
-func (e UcConnectionAnalysis) ExportConnectionGraph(conncetionGraph string) {
+func (e UcPreparationConnections) ExportConnectionGraph(conncetionGraph string) {
 	e.Destination.ExportConnectionGraph(conncetionGraph)
 }
-func (e UcNodeAnalysis) ExportNodeGraph(nodes []string) {
+func (e UcPreparationNodes) ExportNodeGraph(nodes []string) {
 	e.Destination.ExportNodeGraph(nodes)
 }

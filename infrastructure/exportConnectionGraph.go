@@ -3,7 +3,6 @@ package infrastructure
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 )
@@ -25,8 +24,8 @@ func check(e error) {
 
 // ExportConnectionGraph export execution
 func (e SaveConnectionGraphToFsAdapter) ExportConnectionGraph(conncetionGraph string) {
-	filename := e.FileAndFolder
-	f, err := os.Create(filename)
+	prefix_filename := e.FileAndFolder
+	f, err := os.Create(prefix_filename + "networkgraph.gv")
 	check(err)
 	defer func(f *os.File) {
 		err := f.Close()
@@ -48,17 +47,17 @@ func (e SaveConnectionGraphToFsAdapter) ExportConnectionGraph(conncetionGraph st
 	}
 
 	path, _ := exec.LookPath("dot")
-	cmd, _ := exec.Command(path, "-Tpng", filename).Output()
+	cmd, _ := exec.Command(path, "-Tpng", prefix_filename+"networkgraph.gv").Output()
 	mode := 0777
-	err = ioutil.WriteFile("./results/networkgraph.png", cmd, os.FileMode(mode))
+	err = os.WriteFile(prefix_filename+"networkgraph.png", cmd, os.FileMode(mode))
 	if err != nil {
 		return
 	}
 }
 
 func (e SaveNodeGraphToFsAdapter) ExportNodeGraph(nodes []string) {
-	filename := e.FileAndFolder
-	f, err := os.Create(filename)
+	prefix_filename := e.FileAndFolder
+	f, err := os.Create(prefix_filename + "nodes.plantuml")
 	check(err)
 	defer func(f *os.File) {
 		err := f.Close()

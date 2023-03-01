@@ -3,57 +3,57 @@ digraph  {
 
 	subgraph cluster_s1 {
 		label="ARP";
-		n47[label="00:01:05:40:71:f3"];
-		n53[label="20:87:56:bc:20:5e"];
-		n43[label="ac:64:17:4a:8b:a3"];
-		n42[label="ac:64:17:4d:ee:75"];
-		n54[label="ff:ff:ff:ff:ff:ff"];
-		n47->n43[label="1"];
-		n53->n54[label="5"];
-		n43->n54[label="2"];
-		n42->n43[label="1"];
+		n29[label="00:01:05:40:71:f3"];
+		n54[label="20:87:56:bc:20:5e"];
+		n26[label="ac:64:17:4a:8b:a3"];
+		n52[label="ac:64:17:4d:ee:75"];
+		n27[label="ff:ff:ff:ff:ff:ff"];
+		n29->n26[label="1"];
+		n54->n27[label="5"];
+		n26->n27[label="2"];
+		n52->n26[label="1"];
 		
 	}
 	subgraph cluster_s8 {
 		label="EAPOL";
-		n25[label="01:80:c2:00:00:03"];
-		n24[label="20:87:56:bc:20:5f"];
-		n24->n25[label="1"];
+		n60[label="01:80:c2:00:00:03"];
+		n59[label="20:87:56:bc:20:5f"];
+		n59->n60[label="1"];
 		
 	}
 	subgraph cluster_s2 {
 		label="IPv4";
-		n14[label="00:01:05:40:71:f3 \n "];
-		n55[label="00:01:05:40:71:f3 \n 192.168.100.132"];
-		n34[label="01:00:5e:00:00:02 \n "];
-		n36[label="01:00:5e:00:00:02 \n 224.0.0.2"];
-		n21[label="01:00:5e:00:00:16 \n "];
-		n41[label="01:00:5e:00:00:16 \n 224.0.0.22"];
-		n48[label="01:00:5e:00:00:fb \n "];
-		n20[label="01:00:5e:00:00:fc \n "];
-		n59[label="01:00:5e:7f:ff:fa \n "];
-		n33[label="20:87:56:bc:20:5e \n "];
-		n35[label="20:87:56:bc:20:5e \n 192.168.100.125"];
-		n19[label="a0:ce:c8:17:80:fa \n "];
-		n40[label="a0:ce:c8:17:80:fa \n 192.168.100.42"];
-		n13[label="ac:64:17:4a:8b:a3 \n "];
-		n18[label="ac:64:17:4d:ee:75 \n "];
-		n15[label="ff:ff:ff:ff:ff:ff \n "];
-		n56[label="ff:ff:ff:ff:ff:ff \n 255.255.255.255"];
-		n14->n15[label="1"];
-		n14->n13[label="4"];
-		n55->n56[label="1"];
-		n33->n34[label="3"];
-		n35->n36[label="3"];
-		n19->n20[label="1"];
-		n19->n21[label="3"];
-		n19->n48[label="4"];
-		n19->n15[label="4"];
-		n19->n59[label="13"];
-		n40->n41[label="3"];
-		n13->n14[label="4"];
-		n13->n18[label="5"];
-		n18->n13[label="5"];
+		n20[label="00:01:05:40:71:f3 \n "];
+		n22[label="00:01:05:40:71:f3 \n 192.168.100.132"];
+		n44[label="01:00:5e:00:00:02 \n "];
+		n46[label="01:00:5e:00:00:02 \n 224.0.0.2"];
+		n19[label="01:00:5e:00:00:16 \n "];
+		n39[label="01:00:5e:00:00:16 \n 224.0.0.22"];
+		n18[label="01:00:5e:00:00:fb \n "];
+		n47[label="01:00:5e:00:00:fc \n "];
+		n50[label="01:00:5e:7f:ff:fa \n "];
+		n43[label="20:87:56:bc:20:5e \n "];
+		n45[label="20:87:56:bc:20:5e \n 192.168.100.125"];
+		n17[label="a0:ce:c8:17:80:fa \n "];
+		n38[label="a0:ce:c8:17:80:fa \n 192.168.100.42"];
+		n34[label="ac:64:17:4a:8b:a3 \n "];
+		n33[label="ac:64:17:4d:ee:75 \n "];
+		n21[label="ff:ff:ff:ff:ff:ff \n "];
+		n23[label="ff:ff:ff:ff:ff:ff \n 255.255.255.255"];
+		n20->n21[label="1"];
+		n20->n34[label="4"];
+		n22->n23[label="1"];
+		n43->n44[label="3"];
+		n45->n46[label="3"];
+		n17->n18[label="4"];
+		n17->n19[label="3"];
+		n17->n47[label="1"];
+		n17->n50[label="13"];
+		n17->n21[label="4"];
+		n38->n39[label="3"];
+		n34->n20[label="4"];
+		n34->n33[label="5"];
+		n33->n34[label="5"];
 		
 	}
 	subgraph cluster_s4 {
@@ -62,61 +62,61 @@ digraph  {
 	}
 	subgraph cluster_s3 {
 		label="IPv4-UDP";
-		n31[label="00:01:05:40:71:f3 \n 192.168.100.132"];
-		n23[label="01:00:5e:00:00:fb \n 224.0.0.251"];
-		n12[label="01:00:5e:00:00:fc \n 224.0.0.252"];
-		n50[label="01:00:5e:7f:ff:fa \n 239.255.255.250"];
-		n11[label="a0:ce:c8:17:80:fa \n 192.168.100.42"];
-		n27[label="ac:64:17:4a:8b:a3 \n 192.168.100.100"];
-		n26[label="ac:64:17:4d:ee:75 \n 192.168.100.134"];
-		n22[label="ff:ff:ff:ff:ff:ff \n 192.168.100.255"];
-		n31->n27[label="50000 \n-> \n63189 \n 3"];
-		n31->n27[label="50001 \n-> \n34964(profinet-cm) \n 1"];
-		n11->n12[label="62135 \n-> \n5355(llmnr) \n 1"];
-		n11->n22[label="1743(cinegrfx-lm) \n-> \n1740(encore) \n 1"];
-		n11->n23[label="5353(mdns) \n-> \n5353(mdns) \n 4"];
-		n11->n22[label="1743(cinegrfx-lm) \n-> \n1743(cinegrfx-lm) \n 1"];
-		n11->n50[label="62145 \n-> \n1900(ssdp) \n 13"];
-		n11->n22[label="1743(cinegrfx-lm) \n-> \n1741(cisco-net-mgmt) \n 1"];
-		n11->n22[label="1743(cinegrfx-lm) \n-> \n1742(3Com-nsd) \n 1"];
-		n27->n26[label="56341 \n-> \n49153 \n 1"];
-		n27->n31[label="63189 \n-> \n34964(profinet-cm) \n 1"];
-		n27->n26[label="63189 \n-> \n49155 \n 3"];
-		n27->n26[label="63189 \n-> \n34964(profinet-cm) \n 1"];
-		n27->n31[label="56341 \n-> \n50001 \n 1"];
-		n27->n31[label="63189 \n-> \n50000 \n 2"];
-		n26->n27[label="49153 \n-> \n34964(profinet-cm) \n 1"];
-		n26->n27[label="49155 \n-> \n63189 \n 4"];
+		n12[label="00:01:05:40:71:f3 \n 192.168.100.132"];
+		n55[label="01:00:5e:00:00:fb \n 224.0.0.251"];
+		n28[label="01:00:5e:00:00:fc \n 224.0.0.252"];
+		n51[label="01:00:5e:7f:ff:fa \n 239.255.255.250"];
+		n13[label="a0:ce:c8:17:80:fa \n 192.168.100.42"];
+		n11[label="ac:64:17:4a:8b:a3 \n 192.168.100.100"];
+		n40[label="ac:64:17:4d:ee:75 \n 192.168.100.134"];
+		n14[label="ff:ff:ff:ff:ff:ff \n 192.168.100.255"];
+		n12->n11[label="50000 \n-> \n63189 \n 3"];
+		n12->n11[label="50001 \n-> \n34964(profinet-cm) \n 1"];
+		n13->n14[label="1743(cinegrfx-lm) \n-> \n1742(3Com-nsd) \n 1"];
+		n13->n28[label="62135 \n-> \n5355(llmnr) \n 1"];
+		n13->n14[label="1743(cinegrfx-lm) \n-> \n1743(cinegrfx-lm) \n 1"];
+		n13->n14[label="1743(cinegrfx-lm) \n-> \n1741(cisco-net-mgmt) \n 1"];
+		n13->n51[label="62145 \n-> \n1900(ssdp) \n 13"];
+		n13->n55[label="5353(mdns) \n-> \n5353(mdns) \n 4"];
+		n13->n14[label="1743(cinegrfx-lm) \n-> \n1740(encore) \n 1"];
+		n11->n12[label="56341 \n-> \n50001 \n 1"];
+		n11->n12[label="63189 \n-> \n34964(profinet-cm) \n 1"];
+		n11->n40[label="63189 \n-> \n34964(profinet-cm) \n 1"];
+		n11->n12[label="63189 \n-> \n50000 \n 2"];
+		n11->n40[label="63189 \n-> \n49155 \n 3"];
+		n11->n40[label="56341 \n-> \n49153 \n 1"];
+		n40->n11[label="49153 \n-> \n34964(profinet-cm) \n 1"];
+		n40->n11[label="49155 \n-> \n63189 \n 4"];
 		
 	}
 	subgraph cluster_s5 {
 		label="IPv6";
-		n58[label="33:33:00:00:00:01"];
-		n57[label="33:33:00:00:00:02"];
-		n29[label="33:33:00:00:00:16"];
-		n30[label="33:33:00:00:00:fb"];
-		n60[label="33:33:00:01:00:02"];
-		n32[label="33:33:00:01:00:03"];
-		n39[label="33:33:ff:94:c1:af"];
-		n28[label="a0:ce:c8:17:80:fa"];
-		n28->n29[label="5"];
-		n28->n30[label="4"];
-		n28->n32[label="1"];
-		n28->n39[label="1"];
-		n28->n57[label="3"];
-		n28->n58[label="1"];
-		n28->n60[label="6"];
+		n57[label="33:33:00:00:00:01"];
+		n58[label="33:33:00:00:00:02"];
+		n41[label="33:33:00:00:00:16"];
+		n48[label="33:33:00:00:00:fb"];
+		n42[label="33:33:00:01:00:02"];
+		n49[label="33:33:00:01:00:03"];
+		n25[label="33:33:ff:94:c1:af"];
+		n24[label="a0:ce:c8:17:80:fa"];
+		n24->n25[label="1"];
+		n24->n41[label="5"];
+		n24->n42[label="6"];
+		n24->n48[label="4"];
+		n24->n49[label="1"];
+		n24->n57[label="1"];
+		n24->n58[label="3"];
 		
 	}
 	subgraph cluster_s9 {
 		label="LinkLayerDiscovery";
-		n37[label="00:0e:8c:db:8c:55"];
-		n38[label="01:80:c2:00:00:0e"];
-		n49[label="20:87:56:bc:20:5f"];
-		n44[label="a0:ce:c8:17:80:fa"];
-		n37->n38[label="4"];
-		n49->n38[label="3"];
-		n44->n38[label="3"];
+		n35[label="00:0e:8c:db:8c:55"];
+		n36[label="01:80:c2:00:00:0e"];
+		n56[label="20:87:56:bc:20:5f"];
+		n53[label="a0:ce:c8:17:80:fa"];
+		n35->n36[label="4"];
+		n56->n36[label="3"];
+		n53->n36[label="3"];
 		
 	}
 	subgraph cluster_s10 {
@@ -125,22 +125,22 @@ digraph  {
 	}
 	subgraph cluster_s6 {
 		label="PN";
-		n52[label="00:01:05:40:71:f3"];
-		n51[label="01:0e:cf:00:00:00"];
-		n16[label="ac:64:17:4a:8b:a3"];
-		n17[label="ac:64:17:4d:ee:75"];
-		n52->n16[label="6815"];
-		n16->n17[label="8012"];
-		n16->n51[label="3"];
-		n16->n52[label="6814"];
-		n17->n16[label="8019"];
+		n31[label="00:01:05:40:71:f3"];
+		n37[label="01:0e:cf:00:00:00"];
+		n30[label="ac:64:17:4a:8b:a3"];
+		n32[label="ac:64:17:4d:ee:75"];
+		n31->n30[label="6815"];
+		n30->n31[label="6814"];
+		n30->n32[label="8012"];
+		n30->n37[label="3"];
+		n32->n30[label="8019"];
 		
 	}
 	subgraph cluster_s7 {
 		label="Red";
-		n46[label="01:15:4e:00:00:01"];
-		n45[label="20:87:56:bc:20:5f"];
-		n45->n46[label="64"];
+		n16[label="01:15:4e:00:00:01"];
+		n15[label="20:87:56:bc:20:5f"];
+		n15->n16[label="64"];
 		
 	}
 	

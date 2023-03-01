@@ -1,0 +1,43 @@
+
+@startuml
+hide footbox
+
+participant "neTTool\n"  as neTTool
+participant "data: \n UcGetNetworkData" as data
+participant "infrastructure.\nSavedPacketsAdapter" as reader
+participant "pcap-package\n" as gopacket
+participant "CreateConnectionList\n" as CreateConnectionList
+
+neTTool -> data: object creation data:UcGetNetworkData
+note right of neTTool
+ Use of **Port-Adapter-Pattern**
+ (alternativ adapter for live network data)
+end note
+neTTool -> data: data.Source: infrastructure.SavedPacketsAdapter\n{FileAndFolder: mySettings.pcapSource}
+neTTool -> data: Read()
+activate data #FFBBBB
+note right of data
+ delegation of call
+end note
+data -> reader: Source.Read()
+reader -> gopacket: pcap-file
+gopacket -> reader: map[int]gopacket.Packet
+reader -> data: map[int]gopacket.Packet
+data -> neTTool: packetSource: map[int]gopacket.Packet
+deactivate data
+
+neTTool -> data: CreateNetworkData(packetSource)
+activate data #FFBBBB
+data -> CreateConnectionList: map[int]gopacket.Packet
+activate CreateConnectionList #FFBBBB
+  loop all ethernet packets
+            CreateConnectionList -> gopacket: Ethernet package
+            gopacket -> CreateConnectionList: Ethernet data
+            CreateConnectionList -> CreateConnectionList: process \n data
+  end
+CreateConnectionList -> data: map[string]domain.CommonConnection, map[string]domain.Node
+deactivate CreateConnectionList
+data -> neTTool: connectionsList: map[string]domain.CommonConnection, \nnodeList:map[string]domain.Node
+deactivate data
+
+@enduml

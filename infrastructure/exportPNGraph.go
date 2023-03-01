@@ -15,9 +15,14 @@ type SavePNGraphToFsAdapter struct {
 	FileAndFolder string
 }
 
-// PlotData exports the PN Analysis Result to FS
-func (e SavePNGraphToFsAdapter) PlotData(Daten map[string]domain.CommonConnection) {
+// ExportData exports the PN Analysis Result to FS
+func (e SavePNGraphToFsAdapter) DoExport(Daten map[string]domain.CommonConnection) {
+	boxplotStatistics := e.exportBoxplot(Daten)
+	e.exportBoxplotStatistics(boxplotStatistics)
+}
 
+func (e SavePNGraphToFsAdapter) exportBoxplot(Daten map[string]domain.CommonConnection) []string {
+	prefix_file := e.FileAndFolder
 	p, err := plot.New()
 	if err != nil {
 		panic(err)
@@ -49,11 +54,11 @@ func (e SavePNGraphToFsAdapter) PlotData(Daten map[string]domain.CommonConnectio
 
 				statitics = append(statitics, string(k))
 				statitics = append(statitics, "Max            : "+fmt.Sprintf("%2f", b0.Max)+"ms")
-				statitics = append(statitics, "Oberer Wisker  : "+fmt.Sprintf("%2f", b0.AdjHigh)+"ms")
+				statitics = append(statitics, "Upper Whisker  : "+fmt.Sprintf("%2f", b0.AdjHigh)+"ms")
 				statitics = append(statitics, "75% Quantil    : "+fmt.Sprintf("%2f", b0.Quartile3)+"ms")
 				statitics = append(statitics, "Median         : "+fmt.Sprintf("%2f", b0.Median)+"ms")
 				statitics = append(statitics, "25% Quantil    : "+fmt.Sprintf("%2f", b0.Quartile1)+"ms")
-				statitics = append(statitics, "Unterer Wisker : "+fmt.Sprintf("%2f", b0.AdjLow)+"ms")
+				statitics = append(statitics, "Lower Whisker  : "+fmt.Sprintf("%2f", b0.AdjLow)+"ms")
 				statitics = append(statitics, "Min            : "+fmt.Sprintf("%2f", b0.Min)+"ms")
 
 				p.Add(b0)
@@ -82,13 +87,22 @@ func (e SavePNGraphToFsAdapter) PlotData(Daten map[string]domain.CommonConnectio
 		p.NominalX(xtext[0], xtext[1], xtext[2], xtext[3], xtext[4])
 	case 6:
 		p.NominalX(xtext[0], xtext[1], xtext[2], xtext[3], xtext[4], xtext[5])
+	case 7:
+		p.NominalX(xtext[0], xtext[1], xtext[2], xtext[3], xtext[4], xtext[5], xtext[6])
+	case 8:
+		p.NominalX(xtext[0], xtext[1], xtext[2], xtext[3], xtext[4], xtext[5], xtext[6], xtext[7])
 	}
 
-	if err := p.Save(8*vg.Inch, 15*vg.Inch, "./results/boxplot.pdf"); err != nil {
+	if err := p.Save(8*vg.Inch, 15*vg.Inch, prefix_file+"boxplot.pdf"); err != nil {
 		panic(err)
 	}
 
-	f, err := os.Create("./results/boxplotStatistics.txt")
+	return statitics
+}
+
+func (e SavePNGraphToFsAdapter) exportBoxplotStatistics(statitics []string) {
+	prefix_file := e.FileAndFolder
+	f, err := os.Create(prefix_file + "boxplotStatistics.txt")
 	check(err)
 	defer f.Close()
 
@@ -97,5 +111,4 @@ func (e SavePNGraphToFsAdapter) PlotData(Daten map[string]domain.CommonConnectio
 	}
 	f.Sync()
 	f.Close()
-
 }

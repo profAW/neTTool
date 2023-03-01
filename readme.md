@@ -26,7 +26,7 @@ The aim of the tool is to analyse profiNET connections as part of a laboratory s
 
 ## Testing with example data
 
-Testing purposes you can use the example data inside the folder "release/TestData". The results for the file "versuchsaufbau01.pcaapng" are shown in the following graphics.
+Testing purposes you can use the example data inside the folder "release/TestData". The results for the file "versuchsaufbau01.pcap" are shown in the following graphics.
 
 ### Connection Graph 
 Result: networkgraph.png and networkgraph.gv (dot-source-file)
@@ -40,53 +40,54 @@ Please note
 
 ![Networkgraph](docu/networkgraph.png)
 
-### Profinet-Results
+### ProfiNet-Results
 Result: boxplot.pdf and boxplotStatistics.txt
 
 Boxplot of the PN communication (timing) between to nodes. 
+
 ![PN-Boxplot](docu/boxplot.jpg)
 
 Statistic-Values of the Boxplot
 
 ----------------------------------------------
+00:01:05:40:71:f3->ac:64:17:4a:8b:a3|8892
+Max            : 5.159000ms
+Upper Whisker  : 2.052000ms
+75% Quantil    : 2.012000ms
+Median         : 1.999000ms
+25% Quantil    : 1.985000ms
+Lower Whisker  : 1.945000ms
+Min            : 0.082000ms
+
+----------------------------------------------
 ac:64:17:4a:8b:a3->ac:64:17:4d:ee:75|8892
 Max            : 5.870000ms
-Oberer Wisker  : 2.048000ms
+Upper Whisker  : 2.048000ms
 75% Quantil    : 2.011000ms
 Median         : 1.999000ms
 25% Quantil    : 1.986000ms
-Unterer Wisker : 1.949000ms
+Lower Whisker  : 1.949000ms
 Min            : 0.098000ms
-
-----------------------------------------------
-ac:64:17:4d:ee:75->ac:64:17:4a:8b:a3|8892
-Max            : 6.125000ms
-Oberer Wisker  : 2.036000ms
-75% Quantil    : 2.008000ms
-Median         : 1.999000ms
-25% Quantil    : 1.989000ms
-Unterer Wisker : 1.961000ms
-Min            : 0.068000ms
 
 ----------------------------------------------
 ac:64:17:4a:8b:a3->00:01:05:40:71:f3|8892
 Max            : 6.458000ms
-Oberer Wisker  : 2.055000ms
+Upper Whisker  : 2.055000ms
 75% Quantil    : 2.014000ms
 Median         : 2.000000ms
 25% Quantil    : 1.986000ms
-Unterer Wisker : 1.945000ms
+Lower Whisker  : 1.945000ms
 Min            : 0.068000ms
 
 ----------------------------------------------
-00:01:05:40:71:f3->ac:64:17:4a:8b:a3|8892
-Max            : 5.159000ms
-Oberer Wisker  : 2.052000ms
-75% Quantil    : 2.012000ms
+ac:64:17:4d:ee:75->ac:64:17:4a:8b:a3|8892
+Max            : 6.125000ms
+Upper Whisker  : 2.036000ms
+75% Quantil    : 2.008000ms
 Median         : 1.999000ms
-25% Quantil    : 1.985000ms
-Unterer Wisker : 1.945000ms
-Min            : 0.082000ms
+25% Quantil    : 1.989000ms
+Lower Whisker  : 1.961000ms
+Min            : 0.068000ms
 
 ### Nodes
 Result: nodes.plantuml
@@ -113,8 +114,10 @@ node_4[address=  " a0:ce:c8:17:80:fa , 192.168.100.42 "]
 ' Multicast: node [address=  " ff:ff:ff:ff:ff:ff , 255.255.255.255 "]
 @enduml
 ```
+
 The file can be converted into a graphic via plantuml.
-![network.png](docu%2Fnetwork.png)
+
+![nodes](docu/network.png)
 
 ## Cross compile
 on Mac-OS for Windows OS
@@ -130,7 +133,11 @@ foo@bar:~$ CGO_ENABLED=1 CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++ GOOS=w
 André Wenzel
 
 ## Version History
-
+* 1.3.4
+  * Spell issues
+  * Port and adapter cleaner
+  * more SOLID
+  * update documentation
 * 1.3.3 
   * Node export
   * Spell issues
@@ -151,3 +158,15 @@ André Wenzel
 ## License
 
 This project is licensed under the  MIT License see the LICENSE.md file for details
+
+## Some Architecture drawings
+
+### Analysis of the network data, ready for export
+
+Code structure
+
+![getConnectionData_stat.png](docu/getConnectionData_stat.png)
+
+Code behavior
+
+![timing_diagramm.png](docu/timing_diagramm.png)
