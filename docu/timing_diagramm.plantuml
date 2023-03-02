@@ -88,3 +88,54 @@ usecase -> neTTool
 deactivate usecase
 
 @enduml
+
+@startuml timing_diagram_pn_creation
+hide footbox
+
+participant "neTTool\n\n"  as neTTool
+box "object: profinetPreparation\ntype: usecases.UcProfiNETAnalysis" #LightGreen
+  participant "**DoExport()**" as usecase2
+  participant "**CalcProfiNetDeltaTimeInMS()**" as usecase
+end box
+
+box "object: profinetDestination:\ntype: infrastructure.SavePNGraphToFsAdapter." #LightBlue
+  participant "**DoExport()**" as destination
+  participant "**exportBoxplot()**" as destination2
+  participant "**exportBoxplotStatistics()**" as destination3
+end box
+database "Filesystem" as fs
+
+neTTool -> neTTool: object creation \n**profinetDestination**
+neTTool -> neTTool: object creation \n**profinetPreparation**  \nwith Destination: graphDestination
+neTTool -> usecase2: profinetPreparation.DoExport(connectionList)
+activate neTTool #DarkSalmon
+activate usecase2 #DarkSalmon
+
+usecase2 -> usecase: connectionList
+activate usecase #DarkSalmon
+usecase -> usecase2: connectionList
+deactivate usecase 
+
+usecase2 -> destination: Destination.DoExport(connectionList)
+
+activate destination #DarkSalmon
+
+destination -> destination2: connectionList
+activate destination2 #DarkSalmon
+destination2 -> fs: create 'boxplot.pdf'
+destination2 -> destination: statistics
+deactivate destination2
+
+destination -> destination3: statistics
+activate destination3 #DarkSalmon
+destination3 -> fs: create 'boxplotStatistics.txt'
+destination3 -> destination
+deactivate destination3
+deactivate destination
+destination -> usecase2
+deactivate usecase2
+usecase2 -> neTTool
+deactivate usecase
+deactivate neTTool
+
+@enduml
