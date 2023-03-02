@@ -1,5 +1,5 @@
 
-@startuml
+@startuml timing_diagram_analyse_network_data
 hide footbox
 
 participant "neTTool\n"  as neTTool
@@ -39,5 +39,52 @@ CreateConnectionList -> data: map[string]domain.CommonConnection, map[string]dom
 deactivate CreateConnectionList
 data -> neTTool: connectionsList: map[string]domain.CommonConnection, \nnodeList:map[string]domain.Node
 deactivate data
+
+@enduml
+
+@startuml timing_diagram_connectionGraph_creation
+hide footbox
+
+participant "neTTool\n\n"  as neTTool
+participant "connectionPreparation:\nusecases.\nUcPreparationConnections" as usecase
+participant "graphDestination:\ninfrastructure.\nSaveConnectionGraphToFsAdapter" as destination
+control "GraphViz" as graph
+database "Filesystem" as fs
+
+neTTool -> neTTool: object creation \n'graphDestination' of type \n**infrastructure.SaveConnectionGraphToFsAdapter**
+neTTool -> neTTool: object creation \n'connectionPreparation' of type \n**usecases.UcPreparationConnections** \nwith Destination: graphDestination
+neTTool -> usecase: doExport(connectionsList)
+activate usecase #FFBBBB
+
+usecase -> usecase: MakeConnetionGraph(connectionsList) \nreturn conncetionGraph
+usecase -> destination: ExportConnectionGraph(conncetionGraph)
+destination -> fs: create 'networkgraph.gv'
+destination -> graph: create 'networkgraph.png' \nbased on 'networkgraph.gv'
+graph -> fs: create 'networkgraph.png'
+destination -> usecase
+usecase -> neTTool
+deactivate usecase
+
+@enduml
+
+@startuml timing_diagram_node_creation
+hide footbox
+
+participant "neTTool\n\n"  as neTTool
+participant "nodePreparation:\nusecases.\nUcPreparationNodes" as usecase
+participant "nodeDestination:\ninfrastructure.\nSaveNodeGraphToFsAdapter" as destination
+database "Filesystem" as fs
+
+neTTool -> neTTool: object creation \n'nodeDestination' of type \n**infrastructure.SaveNodeGraphToFsAdapter**
+neTTool -> neTTool: object creation \n'connectionPreparation' of type \n**usecases.UcPreparationNodes** \nwith Destination: graphDestination
+neTTool -> usecase: doExport(nodeList)
+activate usecase #FFBBBB
+
+usecase -> usecase: MakeNodeGraph(nodeList) \nreturn conncetionGraph
+usecase -> destination: ExportNodeGraph([]nodes)
+destination -> fs: create 'nodes.plantuml'
+destination -> usecase
+usecase -> neTTool
+deactivate usecase
 
 @enduml

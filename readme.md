@@ -169,4 +169,20 @@ Code structure
 
 Code behavior
 
-![timing_diagramm.png](docu/timing_diagramm.png)
+![timing_diagramm_networkdata.png](docu/timing_diagramm/timing_diagram_analyse_network_data.png)
+
+### Export of Results
+
+Code behavior
+
+**Connection Graph**
+
+![timing_diagram_connectionGraph_creation.png](docu%2Ftiming_diagramm%2Ftiming_diagram_connectionGraph_creation.png)
+
+**Node Graph**
+
+![timing_diagram_node_creation.png](docu%2Ftiming_diagramm%2Ftiming_diagram_node_creation.png)
+
+**ProfiNET**
+
+![timing_diagram_pn_creation.png](docu%2Ftiming_diagramm%2Ftiming_diagram_pn_creation.png)
